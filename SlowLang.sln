@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlowLang.Interpreter", "SlowLang.Interpreter\SlowLang.Interpreter.csproj", "{72D49D22-FE4F-4478-8B83-DB66D59279EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlowLang.CLI", "SlowLang.CLI\SlowLang.CLI.csproj", "{119E6F99-09EC-4F92-84FF-489643ECA3B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{72D49D22-FE4F-4478-8B83-DB66D59279EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72D49D22-FE4F-4478-8B83-DB66D59279EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72D49D22-FE4F-4478-8B83-DB66D59279EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{119E6F99-09EC-4F92-84FF-489643ECA3B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{119E6F99-09EC-4F92-84FF-489643ECA3B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{119E6F99-09EC-4F92-84FF-489643ECA3B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{119E6F99-09EC-4F92-84FF-489643ECA3B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
