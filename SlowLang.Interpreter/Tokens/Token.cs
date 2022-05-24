@@ -10,4 +10,6 @@ public class Token
         RawContent = rawContent;
         Type = type;
     }
+
+    public override string ToString() => $"{Type}:{RawContent}";
 }

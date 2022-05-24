@@ -37,5 +37,12 @@ public class TokenList : IEnumerable<Token>
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
+    public override string ToString()
+    {
+        string output = "";
+        List.ForEach(x => output += "\n" + x);
+        return output;
+    }
+
     #endregion
 }
