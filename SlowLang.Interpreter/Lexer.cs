@@ -7,7 +7,7 @@ namespace SlowLang.Interpreter;
 
 public static class Lexer
 {
-    private static readonly ILogger Logger = new DebugLoggerProvider().CreateLogger("SusLang.Lexer");
+    private static readonly ILogger Logger = Interpreter.LoggerFactory.CreateLogger("SusLang.Lexer");
 
     private static readonly Dictionary<string, TokenType> TokenDefinitions = new()
     {
@@ -29,7 +29,7 @@ public static class Lexer
         
         {@"\w*", TokenType.Keyword}, //Needs to be the last one
     };
-
+    
     public static TokenList Lex(string code)
     {
         TokenList tokenList = new TokenList();
@@ -55,7 +55,7 @@ public static class Lexer
             }
         }
 
-        Logger.LogInformation(tokenList.ToString());
+        Logger.LogInformation("Lexed:" + tokenList);
         return tokenList;
     }
 }
