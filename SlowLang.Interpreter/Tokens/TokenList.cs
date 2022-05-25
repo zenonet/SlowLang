@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using SlowLang.Interpreter.Statements;
 
 namespace SlowLang.Interpreter.Tokens;
 
@@ -44,5 +45,7 @@ public class TokenList : IEnumerable<Token>
         return output;
     }
 
+    public static implicit operator List<Token>(TokenList tokenList) => tokenList.List;
+    
     #endregion
 }
