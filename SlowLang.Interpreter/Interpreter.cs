@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Debug;
+using SlowLang.Interpreter.Statements;
+using SlowLang.Interpreter.Tokens;
 
 namespace SlowLang.Interpreter;
 
@@ -20,6 +21,12 @@ public static class Interpreter
 
     public static void RunScript(string code)
     {
-        Lexer.Lex(code);
+        TokenList tokenList = Lexer.Lex(code);
+
+        Statement[] statements = Statement.Parse(tokenList);
+        foreach (Statement statement in statements)
+        {
+            Logger.LogInformation(statement.ToString());
+        }
     }
 }
