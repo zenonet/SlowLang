@@ -52,9 +52,9 @@ public abstract class Statement
             foreach (StatementRegistration registration in Registrations)
             {
                 //Check if the matching sequence in the current registration would fit int o list.List
-                if(registration.Match.Length > list.List.Count)
+                if (registration.Match.Length > list.List.Count)
                     continue;
-                
+
 
                 //Iterate through all elements and check if the TokenType matches
                 for (int i = 0; i < registration.Match.Length; i++)
@@ -65,10 +65,20 @@ public abstract class Statement
                 }
 
                 //Only if the complete match list of the current registration matches:
-                statements.Add((Activator.CreateInstance(registration.Statement) as Statement)!);
+
+                //Instantiate the matching subclass
+                Statement statement = (Activator.CreateInstance(registration.Statement) as Statement)!;
+
+                //Add it to the statements list
+                statements.Add(statement);
+
+                //Invoke its OnParse() callback
+                statement.OnParse(ref list);
+
+                //Remove the tokens that match from the token list
                 list.List.RemoveRange(0, registration.Match.Length);
+
                 parsedSomething = true;
-                
                 break;
 
                 next: ;
@@ -96,7 +106,7 @@ public abstract class Statement
             return;
         }
 
-        //Thanks to 'Yahoo Serious' answer here: https://stackoverflow.com/questions/857705/get-all-derived-types-of-a-type
+        //Thanks to 'Yahoo Serious' for his answer here: https://stackoverflow.com/questions/857705/get-all-derived-types-of-a-type
 
         //Iterate through all types which inherit from Statement
         foreach (
