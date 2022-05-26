@@ -5,14 +5,14 @@ namespace SlowLang.Interpreter.Tokens;
 
 public class TokenList : IEnumerable<Token>
 {
-    internal readonly List<Token> List = new ();
+    internal readonly List<Token> List = new();
 
     /// <summary>
     /// Adds a Token to the top of the list
     /// </summary>
     /// <param name="token">The token to add</param>
     public void Add(Token token) => List.Add(token);
-    
+
     /// <summary>
     /// Gets the first token in the list but doesn't remove it
     /// </summary>
@@ -31,6 +31,33 @@ public class TokenList : IEnumerable<Token>
         return first;
     }
 
+    
+    /// <summary>
+    /// Splits a TokenList at a separator
+    /// </summary>
+    /// <param name="separator">The separator to split at</param>
+    /// <returns>An array of TokenLists</returns>
+    public TokenList[] Split(TokenType separator)
+    {
+        List<TokenList> tokenLists = new();
+
+        if(List.Count > 0)
+            tokenLists.Add(new TokenList());
+        
+        foreach (Token token in List)
+        {
+            if (token.Type == separator)
+            {
+                tokenLists.Add(new TokenList());
+                continue;
+            }
+
+            tokenLists.Last().Add(token);
+        }
+
+        return tokenLists.ToArray();
+    }
+
 
     #region Contracts
 
@@ -46,6 +73,19 @@ public class TokenList : IEnumerable<Token>
     }
 
     public static implicit operator List<Token>(TokenList tokenList) => tokenList.List;
-    
+
+
+    public Token this[int index] => List[index];
+
+
+    internal TokenList(IEnumerable<Token> tokens)
+    {
+        List = tokens.ToList();
+    }
+
+    public TokenList()
+    {
+    }
+
     #endregion
 }
