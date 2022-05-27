@@ -69,7 +69,8 @@ public class TokenList : IEnumerable<Token>
     {
         string output = "";
         List.ForEach(x => output += "\n" + x);
-        return output;
+        //Trim the line break at the Start and return
+        return output.TrimStart('\n');
     }
 
     public static implicit operator List<Token>(TokenList tokenList) => tokenList.List;
