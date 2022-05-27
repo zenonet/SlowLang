@@ -15,7 +15,11 @@ public abstract class Statement
 
     private static bool isInitialized = false;
 
-
+    /// <summary>
+    /// If this returns true, the Statement will have to cut itself from the token list
+    /// </summary>
+    protected virtual bool CutTokensManually() => false;
+    
     protected virtual void Execute()
     {
     }
@@ -73,7 +77,8 @@ public abstract class Statement
                 statements.Add(statement);
 
                 //Remove the tokens that match from the token list
-                list.List.RemoveRange(0, registration.Match.Length);
+                if(!statement.CutTokensManually())
+                    list.List.RemoveRange(0, registration.Match.Length);
                 
                 //Invoke its OnParse() callback
                 statement.OnParse(ref list);
