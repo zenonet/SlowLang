@@ -10,7 +10,7 @@ namespace SlowLang.Interpreter.Statements;
 /// </summary>
 public abstract class Statement
 {
-    protected static readonly ILogger Logger = Interpreter.LoggerFactory.CreateLogger("SusLang.Statements");
+    protected static readonly ILogger Logger = Interpreter.LoggerFactory.CreateLogger("SlowLang.Statements");
 
 
     private static bool isInitialized = false;
@@ -72,12 +72,11 @@ public abstract class Statement
                 //Add it to the statements list
                 statements.Add(statement);
 
-                //Invoke its OnParse() callback
-                statement.OnParse(ref list);
-
                 //Remove the tokens that match from the token list
                 list.List.RemoveRange(0, registration.Match.Length);
-
+                
+                //Invoke its OnParse() callback
+                statement.OnParse(ref list);
                 parsedSomething = true;
                 break;
 

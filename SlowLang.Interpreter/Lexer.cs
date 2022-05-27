@@ -7,7 +7,7 @@ namespace SlowLang.Interpreter;
 
 public static class Lexer
 {
-    private static readonly ILogger Logger = Interpreter.LoggerFactory.CreateLogger("SusLang.Lexer");
+    private static readonly ILogger Logger = Interpreter.LoggerFactory.CreateLogger("SlowLang.Lexer");
 
     private static readonly Dictionary<string, TokenType> TokenDefinitions = new()
     {

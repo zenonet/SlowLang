@@ -17,16 +17,12 @@ public static class Interpreter
             ;
     });
 
-    private static readonly ILogger Logger = LoggerFactory.CreateLogger("SusLang.Interpreter");
+    private static readonly ILogger Logger = LoggerFactory.CreateLogger("SlowLang.Interpreter");
 
     public static void RunScript(string code)
     {
         TokenList tokenList = Lexer.Lex(code);
 
         Statement[] statements = Statement.Parse(tokenList);
-        foreach (Statement statement in statements)
-        {
-            Logger.LogInformation(statement.ToString());
-        }
     }
 }
