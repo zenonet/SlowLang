@@ -18,7 +18,13 @@ public class TokenList : IEnumerable<Token>
     /// </summary>
     /// <returns>The first token</returns>
     /// <param name="offset">Offsets the index to peek at</param>
-    public Token Peek(int offset = 0) => List[offset];
+    public Token Peek(int offset = 0)
+    {
+        if(List.Count > offset)
+            return List[offset];
+
+        return null!;
+    }
 
     /// <summary>
     /// Gets the first token and removes it
@@ -26,6 +32,9 @@ public class TokenList : IEnumerable<Token>
     /// <returns>Offsets the index to get at (Not recommended)</returns>
     public Token Pop(int offset = 0)
     {
+        if (List.Count > offset)
+            return null!;
+        
         Token first = List[offset];
         List.RemoveAt(offset);
         return first;
