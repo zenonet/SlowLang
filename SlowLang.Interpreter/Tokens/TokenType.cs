@@ -13,6 +13,8 @@ public enum TokenType
     OpeningBrace,
     ClosingBrace,
     
+    Equals,
+    
     Semicolon,
     Comma,
 }
