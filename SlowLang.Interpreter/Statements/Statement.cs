@@ -104,19 +104,10 @@ public abstract class Statement
             Logger.LogCritical("Couldn't get the current Assembly");
             return;
         }
-
-        //Thanks to 'Yahoo Serious' for his answer here: https://stackoverflow.com/questions/857705/get-all-derived-types-of-a-type
-
+        
         //Iterate through all types which inherit from Statement
-        foreach (
-            Type type in from domainAssembly in AppDomain.CurrentDomain.GetAssemblies()
-            from assemblyType in domainAssembly.GetTypes()
-            where typeof(Statement).IsAssignableFrom(assemblyType)
-            select assemblyType)
+        foreach (Type type in ParsingUtility.GetAllInheritors(typeof(Statement)))
         {
-            //Ignore the Statement class itself
-            if (type == typeof(Statement))
-                continue;
 
             //Get a static method called OnInitialize inside of them
             MethodInfo? initMethod = type.GetMethod("OnInitialize");
