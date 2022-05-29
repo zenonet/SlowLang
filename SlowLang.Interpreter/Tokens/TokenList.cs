@@ -32,7 +32,7 @@ public class TokenList : IEnumerable<Token>
     /// <returns>Offsets the index to get at (Not recommended)</returns>
     public Token Pop(int offset = 0)
     {
-        if (List.Count > offset)
+        if (List.Count < offset)
             return null!;
         
         Token first = List[offset];
