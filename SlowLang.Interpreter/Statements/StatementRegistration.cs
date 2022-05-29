@@ -13,7 +13,7 @@ public struct StatementRegistration
         Statement = statement;
     }
     
-    public static StatementRegistration Create<T>(params TokenType[] match)
+    public static StatementRegistration Create<T>(params TokenType[] match) where T : Statement
     {
         return new StatementRegistration(typeof(T), match);
     }
