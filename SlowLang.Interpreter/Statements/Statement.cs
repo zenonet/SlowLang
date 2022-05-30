@@ -86,8 +86,7 @@ public abstract class Statement
             return statement;
         
         
-        
-        Logger.LogCritical("Couldn't parse {stmt}", list.List[0].ToString());
+        Interpreter.LogError($"Couldn't parse {list.List[0]}");
         return null!;
     }
     
