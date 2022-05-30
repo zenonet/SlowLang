@@ -70,4 +70,16 @@ public static class ParsingUtility
             select assemblyType
             ).ToArray();
     }
+
+    /// <summary>
+    /// Executes a collection of Statements in order
+    /// </summary>
+    /// <param name="statements">The collection of statements</param>
+    public static void Execute(this IEnumerable<Statement> statements)
+    {
+        foreach (Statement statement in statements)
+        {
+            statement.Execute();
+        }
+    }
 }
