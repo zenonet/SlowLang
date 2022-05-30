@@ -11,7 +11,15 @@ namespace SlowLang.Interpreter.Values;
 public abstract class Value
 {
     private static readonly ILogger Logger = Interpreter.LoggerFactory.CreateLogger("SlowLang.ValueSystem");
+
     
+    
+
+    /// <summary>
+    /// Contains all variables in the current script
+    /// </summary>
+    public static readonly Dictionary<string, Value> Variables = new();
+
 
     /// <summary>
     /// Parses a TokenList into a Value object
