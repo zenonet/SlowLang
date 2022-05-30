@@ -53,9 +53,8 @@ public class FunctionCall : Statement
         //Remove the rest of the Function call from the TokenList + 1 (The closing bracket) 
         list.List.RemoveRange(0, betweenBraces.List.Count + 1);
 
-        if (list.Peek() != null && list.Peek().Type is TokenType.Semicolon)
+        if (list.Peek() != null! && list.Peek().Type is TokenType.Semicolon)
             list.Pop();
-
     }
 
     public override Value Execute() => 
