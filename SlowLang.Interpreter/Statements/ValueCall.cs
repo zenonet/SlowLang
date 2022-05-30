@@ -26,9 +26,16 @@ public class ValueCall : Statement
     }
 
 
+    protected override bool CutTokensManually() => true;
 
     protected override void OnParse(ref TokenList list)
     {
         value = Value.Parse(list.Take(..1).AsTokenList());
+        list.Pop();
+    }
+
+    public override Value Execute()
+    {
+        return value!;
     }
 }
