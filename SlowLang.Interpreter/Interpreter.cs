@@ -25,6 +25,15 @@ public static class Interpreter
 
     private static readonly ILogger Logger = LoggerFactory.CreateLogger("SlowLang.Interpreter");
 
+    internal static readonly ILogger ErrorLogger = LoggerFactory.CreateLogger("SlowLang.Errors");
+
+
+    internal static void LogError(string errorMessage)
+    {
+        ErrorLogger.LogError(errorMessage);
+        Environment.Exit(0);
+    }
+
     public static void RunScript(string code)
     {
         OutputStream ??= Console.Out;
