@@ -1,11 +1,17 @@
 ﻿using Microsoft.Extensions.Logging;
 using SlowLang.Interpreter.Statements;
 using SlowLang.Interpreter.Tokens;
+using SlowLang.Interpreter.Values;
 
 namespace SlowLang.Interpreter;
 
 public static class Interpreter
 {
+    public static TextWriter? OutputStream;
+    
+    
+    
+    
     /// <summary>
     /// The LoggerFactory used for all Loggers in the Project
     /// </summary>
@@ -21,8 +27,13 @@ public static class Interpreter
 
     public static void RunScript(string code)
     {
+        OutputStream ??= Console.Out;
+        
         TokenList tokenList = Lexer.Lex(code);
 
-        Statement[] statements = Statement.Parse(tokenList);
+        StandardLib.Import();
+
+        Statement[] statements = Statement.ParseMultiple(tokenList);
+        statements.Execute();
     }
 }
