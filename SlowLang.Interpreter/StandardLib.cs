@@ -16,5 +16,9 @@ public static class StandardLib
                 return SlowVoid.I;
             }
         ));
+        
+        DefinedFunctions.Add(new FunctionDefinition(
+            "getInput",
+            _ => new SlowString(Interpreter.InputStream!.ReadLine()!)));
     }
 }
