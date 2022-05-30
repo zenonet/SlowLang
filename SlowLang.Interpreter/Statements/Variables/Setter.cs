@@ -6,7 +6,7 @@ namespace SlowLang.Interpreter.Statements.Variables;
 
 public class Setter : Statement
 {
-    private Value? value;
+    private Statement value;
     private string varName;
 
     public static void OnInitialize()
@@ -29,17 +29,22 @@ public class Setter : Statement
         //Remove the equals
         list.Pop();
 
-        value = Value.Parse(list);
+        value = Statement.Parse(ref list);
         
         if (list.Peek() != null! && list.Peek().Type is TokenType.Semicolon)
             list.Pop();
         else
-            Interpreter.LogError("Missing semicolon after setter statement");
+            Logger.LogCritical("Missing semicolon after setter statement");
     }
 
     public override Value Execute()
     {
-        Value.Variables[varName] = value!;
+        Value val = value.Execute();
+        
+        if(val == SlowVoid.I)
+            Interpreter.LogError($"{value} doesn't have a return value");
+        
+        Value.Variables[varName] = val;
         return SlowVoid.I;
     }
 }
