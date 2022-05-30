@@ -19,13 +19,11 @@ public class UnitTest1
         Initialize();
         Interpreter.Interpreter.RunScript(code);
         Assert.True(stringBuilder.ToString()
-            .TrimEnd('\n')
-            .TrimEnd('\r')
+            .TrimEnd('\r', '\n')
             .Equals(
                 expectedOutput
-                    .TrimEnd('\n')
-                    .TrimEnd('\r')
-                    )
+                    .TrimEnd('\n', '\n')
+            )
         );
     }
     
@@ -33,21 +31,14 @@ public class UnitTest1
     [Fact]
     public void HelloWorld()
     {
-        TestScript("print(\"Hello World!\")", "Hello World!");
-    }
-    
-    [Fact]
-    public void HelloWorldWithSemicolon()
-    {
         TestScript("print(\"Hello World!\");", "Hello World!");
     }
 
     [Fact]
     public void HelloWorldWithVariable()
     {
-        Assert.True(false);
-        TestScript("var hw = \"Hello World!\";" +
-                        "print(hw);",
+        TestScript("hw = \"Hello World!\";" +
+                                       "print(hw);",
             "Hello World!");
     }
 }
