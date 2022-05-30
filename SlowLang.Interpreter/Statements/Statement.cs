@@ -2,6 +2,7 @@
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using SlowLang.Interpreter.Tokens;
+using SlowLang.Interpreter.Values;
 
 namespace SlowLang.Interpreter.Statements;
 
@@ -19,13 +20,12 @@ public abstract class Statement
     /// If this returns true, the Statement will have to cut itself from the token list
     /// </summary>
     protected virtual bool CutTokensManually() => false;
-    
-    protected virtual void Execute()
-    {
-    }
+
+    public virtual Value Execute() => SlowVoid.I;
 
     protected virtual void OnParse(ref TokenList list)
     {
+        
     }
 
     private static readonly List<StatementRegistration> Registrations = new();
@@ -43,7 +43,55 @@ public abstract class Statement
     }
 
 
-    public static Statement[] Parse(TokenList list)
+    public static Statement Parse(ref TokenList list)
+    {
+        //If the Parser wasn't initialized yet, do it now
+        if (!isInitialized)
+            Initialize();
+
+        Statement? statement = null;
+        foreach (StatementRegistration registration in Registrations)
+        {
+            //Check if the matching sequence in the current registration would fit int o list.List
+            if (registration.Match.Length > list.List.Count)
+                continue;
+
+
+            //Iterate through all elements and check if the TokenType matches
+            for (int i = 0; i < registration.Match.Length; i++)
+            {
+                //If it doesn't match, jump to the next block and go to the next element in the foreach statement
+                if (list.List[i].Type != registration.Match[i])
+                    goto next;
+            }
+
+            //Only if the complete match list of the current registration matches:
+
+            //Instantiate the matching subclass
+            statement = (Activator.CreateInstance(registration.Statement) as Statement)!;
+            
+
+            //Remove the tokens that match from the token list
+            if(!statement.CutTokensManually())
+                list.List.RemoveRange(0, registration.Match.Length);
+                
+            //Invoke its OnParse() callback
+            statement.OnParse(ref list);
+            break;
+
+            next: ;
+        }
+
+        if (statement != null)
+            return statement;
+        
+        
+        
+        Logger.LogCritical("Couldn't parse {stmt}", list.List[0].ToString());
+        return null!;
+    }
+    
+    public static Statement[] ParseMultiple(TokenList list)
     {
         //If the Parser wasn't initialized yet, do it now
         if (!isInitialized)
@@ -52,47 +100,7 @@ public abstract class Statement
         List<Statement> statements = new();
         while (list.List.Count > 0)
         {
-            bool parsedSomething = false;
-            foreach (StatementRegistration registration in Registrations)
-            {
-                //Check if the matching sequence in the current registration would fit int o list.List
-                if (registration.Match.Length > list.List.Count)
-                    continue;
-
-
-                //Iterate through all elements and check if the TokenType matches
-                for (int i = 0; i < registration.Match.Length; i++)
-                {
-                    //If it doesn't match, jump to the next block and go to the next element in the foreach statement
-                    if (list.List[i].Type != registration.Match[i])
-                        goto next;
-                }
-
-                //Only if the complete match list of the current registration matches:
-
-                //Instantiate the matching subclass
-                Statement statement = (Activator.CreateInstance(registration.Statement) as Statement)!;
-
-                //Add it to the statements list
-                statements.Add(statement);
-
-                //Remove the tokens that match from the token list
-                if(!statement.CutTokensManually())
-                    list.List.RemoveRange(0, registration.Match.Length);
-                
-                //Invoke its OnParse() callback
-                statement.OnParse(ref list);
-                parsedSomething = true;
-                break;
-
-                next: ;
-            }
-
-            if (!parsedSomething)
-            {
-                Logger.LogCritical("Couldn't parse {stmt}", list.List[0].ToString());
-                break;
-            }
+            statements.Add(Parse(ref list));
         }
 
         return statements.ToArray();
