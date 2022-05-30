@@ -7,28 +7,47 @@ namespace SlowLang.Tests;
 public class UnitTest1
 {
     private readonly StringBuilder stringBuilder = new ();
-    public void Initialize()
+    private void Initialize()
     {
         TextWriter textWriter = new StringWriter(stringBuilder);
 
         Interpreter.Interpreter.OutputStream = textWriter;
     }
+
+    private void TestScript(string code, string expectedOutput)
+    {
+        Initialize();
+        Interpreter.Interpreter.RunScript(code);
+        Assert.True(stringBuilder.ToString()
+            .TrimEnd('\n')
+            .TrimEnd('\r')
+            .Equals(
+                expectedOutput
+                    .TrimEnd('\n')
+                    .TrimEnd('\r')
+                    )
+        );
+    }
+    
     
     [Fact]
     public void HelloWorld()
     {
-        Initialize();
-        SlowLang.Interpreter.Interpreter.RunScript("print(\"Hello World\")");
-        
-        Xunit.Assert.True(stringBuilder.ToString().TrimEnd('\n').TrimEnd('\r') == "Hello World");
+        TestScript("print(\"Hello World!\")", "Hello World!");
     }
     
     [Fact]
     public void HelloWorldWithSemicolon()
     {
-        Initialize();
-        SlowLang.Interpreter.Interpreter.RunScript("print(\"Hello World\");");
-        
-        Xunit.Assert.True(stringBuilder.ToString().TrimEnd('\n').TrimEnd('\r') == "Hello World");
+        TestScript("print(\"Hello World!\");", "Hello World!");
+    }
+
+    [Fact]
+    public void HelloWorldWithVariable()
+    {
+        Assert.True(false);
+        TestScript("var hw = \"Hello World!\";" +
+                        "print(hw);",
+            "Hello World!");
     }
 }
