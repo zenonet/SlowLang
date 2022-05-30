@@ -11,9 +11,9 @@ public class FunctionCall : Statement
 {
     public FunctionDefinition? Reference;
 
-    public Value[] Parameters = null!;
+    public Statement[] Parameters = null!;
 
-    public FunctionCall(FunctionDefinition? reference, Value[] parameters)
+    public FunctionCall(FunctionDefinition? reference, Statement[] parameters)
     {
         Reference = reference;
         Parameters = parameters;
@@ -42,10 +42,10 @@ public class FunctionCall : Statement
         //Find everything between the braces
         TokenList betweenBraces = ParsingUtility.FindBetweenBraces(list, TokenType.OpeningBrace, TokenType.ClosingBrace, Logger);
 
-        List<Value> parameters = new();
+        List<Statement> parameters = new();
         foreach (TokenList tokenList in betweenBraces.Split(TokenType.Comma))
         {
-            parameters.Add(Value.Parse(tokenList)!);
+            parameters.Add(Statement.Parse(ref list));
         }
 
         this.Parameters = parameters.ToArray();
@@ -57,6 +57,21 @@ public class FunctionCall : Statement
             list.Pop();
     }
 
-    public override Value Execute() => 
-        Reference?.OnInvoke.Invoke(Parameters)!;
+    public override Value Execute()
+    {
+        List<Value> executedParameters = new();
+        
+        foreach (Statement parameter in Parameters)
+        {
+            Value v = parameter.Execute();
+            
+            if(v == SlowVoid.I)
+                Interpreter.LogError($"{parameter} doesn't have a return value");
+
+            executedParameters.Add(v);
+        }
+
+        return Reference?.OnInvoke.Invoke(executedParameters.ToArray())!;
+
+    }
 }
