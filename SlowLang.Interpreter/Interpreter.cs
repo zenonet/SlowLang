@@ -8,6 +8,7 @@ namespace SlowLang.Interpreter;
 public static class Interpreter
 {
     public static TextWriter? OutputStream;
+    public static TextReader? InputStream;
     
     
     
@@ -37,6 +38,7 @@ public static class Interpreter
     public static void RunScript(string code)
     {
         OutputStream ??= Console.Out;
+        InputStream ??= Console.In;
         
         TokenList tokenList = Lexer.Lex(code);
 
