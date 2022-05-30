@@ -67,6 +67,18 @@ public class TokenList : IEnumerable<Token>
         return tokenLists.ToArray();
     }
 
+    /// <summary>
+    /// Removes a range of elements from the TokenList
+    /// </summary>
+    /// <param name="range">The range to remove</param>
+    public void RemoveRange(Range range)
+    {
+        if(List.Count > range.End.Value)
+            List.Clear();
+        else
+            List.RemoveRange(range.Start.Value, range.End.Value - range.Start.Value);
+    }
+
 
     #region Contracts
 
