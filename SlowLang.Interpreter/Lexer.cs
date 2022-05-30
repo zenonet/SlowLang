@@ -25,6 +25,7 @@ public static class Lexer
         
         {@";", TokenType.Semicolon},
         {@",", TokenType.Comma},
+        {@"\s*=\s*", TokenType.Equals},
         
         
         {@"\w*", TokenType.Keyword}, //Needs to be the last one
@@ -35,6 +36,7 @@ public static class Lexer
         TokenList tokenList = new TokenList();
         while (code.Length > 0)
         {
+            code = code.TrimStart('\r', '\n');
             //Iterate through all defined tokens
             foreach (KeyValuePair<string,TokenType> tokenDefinition in TokenDefinitions)
             {
