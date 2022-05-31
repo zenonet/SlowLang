@@ -43,15 +43,15 @@ public class FunctionCall : Statement
         TokenList betweenBraces = ParsingUtility.FindBetweenBraces(list, TokenType.OpeningBrace, TokenType.ClosingBrace, Logger);
 
         List<Statement> parameters = new();
-        foreach (TokenList tokenList in betweenBraces.Split(TokenType.Comma))
+        while (betweenBraces.List.Count > 0)   
         {
-            parameters.Add(Statement.Parse(ref list));
-        }
+            parameters.Add(Parse(ref betweenBraces));
 
+            if (betweenBraces.Peek() != null && betweenBraces.Peek().Type is TokenType.Comma)
+                betweenBraces.Pop();
+        }
         this.Parameters = parameters.ToArray();
         
-        //Remove the rest of the Function call from the TokenList + 1 (The closing bracket) 
-        list.List.RemoveRange(0, betweenBraces.List.Count + 1);
 
         if (list.Peek() != null! && list.Peek().Type is TokenType.Semicolon)
             list.Pop();
