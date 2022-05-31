@@ -10,7 +10,7 @@ public class UnitTest1
     private void Initialize()
     {
         TextWriter textWriter = new StringWriter(stringBuilder);
-
+        
         Interpreter.Interpreter.OutputStream = textWriter;
     }
 
@@ -40,5 +40,13 @@ public class UnitTest1
         TestScript("hw = \"Hello World!\";" +
                                        "print(hw);",
             "Hello World!");
+    }
+
+    [Fact]
+    public void GetInputAndReturn()
+    {
+        Initialize();
+        Interpreter.Interpreter.InputStream = new StringReader("Hello SlowLang\n");
+        TestScript("print(getInput())", "Hello SlowLang");
     }
 }
