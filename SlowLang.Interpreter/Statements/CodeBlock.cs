@@ -5,7 +5,7 @@ namespace SlowLang.Interpreter.Statements;
 /// <summary>
 /// Represents a block of code
 /// </summary>
-public class CodeBlock : Statement
+public abstract class CodeBlock : Statement
 {
     /// <summary>
     /// A list of all statements this CodeBlock contains
