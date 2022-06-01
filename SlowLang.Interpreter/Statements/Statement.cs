@@ -128,7 +128,11 @@ public abstract class Statement
         //Iterate through all types which inherit from Statement
         foreach (Type type in ParsingUtility.GetAllInheritors(typeof(Statement)))
         {
-
+            
+            //Ignore abstract Statement inheritors
+            if(type.IsAbstract)
+                continue;
+            
             //Get a static method called OnInitialize inside of them
             MethodInfo? initMethod = type.GetMethod("OnInitialize");
 
