@@ -10,16 +10,11 @@ public class CodeBlock : Statement
     /// <summary>
     /// A list of all statements this CodeBlock contains
     /// </summary>
-    private readonly Statement[] statements;
-
-    public CodeBlock(Statement[] statements)
-    {
-        this.statements = statements;
-    }
+    protected Statement[] Statements;
 
     public override Value Execute()
     {
-        statements.Execute();
+        Statements.Execute();
         return SlowVoid.I;
     }
 }
