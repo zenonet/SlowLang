@@ -6,6 +6,7 @@ public enum TokenType
     Keyword,
     Int,
     Float,
+    Bool,
     
     OpeningCurlyBrace,
     ClosingCurlyBrace,
