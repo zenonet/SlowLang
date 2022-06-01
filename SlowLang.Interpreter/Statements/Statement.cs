@@ -60,13 +60,22 @@ public abstract class Statement
             //Iterate through all elements and check if the TokenType matches
             for (int i = 0; i < registration.Match.Length; i++)
             {
-                //If it doesn't match, jump to the next block and go to the next element in the foreach statement
+                //If it doesn't match:
                 if (list.List[i].Type != registration.Match[i])
-                    goto next;
+                    goto next; //Jump over all of the parsing stuff and continue with the next StatementRegistration
             }
 
-            //Only if the complete match list of the current registration matches:
 
+            //If the StatementRegistration has a customParser defined:
+            if (registration.CustomParser != null)
+            {
+                //Execute the custom Parser
+                bool result = registration.CustomParser.Invoke(list);
+                if(!result) //And if it couldn't parse the TokenList, jump over the parsing stuff and continue with the next StatementRegistration
+                    goto next;
+            }
+            
+            
             //Instantiate the matching subclass
             statement = (Activator.CreateInstance(registration.Statement) as Statement)!;
             
@@ -86,7 +95,7 @@ public abstract class Statement
             return statement;
         
         
-        Interpreter.LogError($"Couldn't parse {list.List[0]}");
+        Interpreter.LogError($"Couldn't parse {list.Peek()}");
         return null!;
     }
     
