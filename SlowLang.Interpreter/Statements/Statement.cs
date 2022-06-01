@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
+﻿using System.Reflection;
 using Microsoft.Extensions.Logging;
 using SlowLang.Interpreter.Tokens;
 using SlowLang.Interpreter.Values;
@@ -140,6 +139,9 @@ public abstract class Statement
                 initMethod.Invoke(null, null);
         }
 
+        //Sort registrations
+        Registrations.Sort(((x, y) => y.Match.Length - x.Match.Length));
+        
         isInitialized = true;
     }
 
