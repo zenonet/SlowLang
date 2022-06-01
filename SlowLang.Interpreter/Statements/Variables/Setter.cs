@@ -35,6 +35,9 @@ public class Setter : Statement
             list.Pop();
         else
             Logger.LogCritical("Missing semicolon after setter statement");
+        
+        //Register the variable but don't give it any value yet
+        Value.Variables.Add(varName, SlowVoid.I);
     }
 
     public override Value Execute()
