@@ -7,7 +7,7 @@ public struct StatementRegistration
     public readonly Type Statement;
     public readonly TokenType[] Match;
 
-    public CustomParser? CustomParser = null;
+    public readonly CustomParser? CustomParser = null;
 
 
     internal StatementRegistration(Type statement, TokenType[] match, CustomParser? customParser = null)
@@ -30,4 +30,7 @@ public struct StatementRegistration
     
 }
 
+/// <summary>
+/// Used to define a custom Statement parser
+/// </summary>
 public delegate bool CustomParser(TokenList tokenList);
