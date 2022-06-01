@@ -6,25 +6,15 @@ namespace SlowLang.Interpreter.Statements.Variables;
 
 public class Getter : Statement
 {
-
     public string VariableName;
+
     public static void OnInitialize()
     {
         Logger.LogInformation("Now initializing Getter");
-        
-        Statement.Register(StatementRegistration.Create<Getter>(
-            TokenType.Keyword,
-            TokenType.Semicolon
-        ));
-        
-        Statement.Register(StatementRegistration.Create<Getter>(
-            TokenType.Keyword,
-            TokenType.Comma
-        ));
-        
-        Statement.Register(StatementRegistration.Create<Getter>(
-            TokenType.Keyword,
-            TokenType.ClosingBrace
+
+        Statement.Register(StatementRegistration.CreateWithCustomParser<Getter>(
+            tokenList => Value.Variables.ContainsKey(tokenList.Peek().RawContent), //Check if a variable with that name exists
+            TokenType.Keyword
         ));
     }
 
@@ -37,7 +27,7 @@ public class Getter : Statement
 
     public override Value Execute()
     {
-        if(!Value.Variables.ContainsKey(VariableName))
+        if (!Value.Variables.ContainsKey(VariableName))
             Interpreter.LogError("There is no variable called " + VariableName);
 
         //Interpreter.LogError makes the process exit so this will only run if the variable exists
