@@ -26,8 +26,8 @@ public struct StatementRegistration
     {
         return new StatementRegistration(typeof(T), match, customParser);
     }
-    
-    
+
+    public override string ToString() => Statement.Name + "-Registration";
 }
 
 /// <summary>
