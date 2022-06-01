@@ -28,7 +28,7 @@ public static class ParsingUtility
             if (input[i].Type == openingBracket)
                 openedBraces++;
 
-            if (input[i].Type is TokenType.ClosingBrace)
+            if (input[i].Type == closingBracket)
                 openedBraces--;
 
             if (openedBraces == 0)
