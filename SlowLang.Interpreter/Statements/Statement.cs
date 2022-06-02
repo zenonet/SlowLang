@@ -24,7 +24,6 @@ public abstract class Statement
 
     protected virtual void OnParse(ref TokenList list)
     {
-        
     }
 
     private static readonly List<StatementRegistration> Registrations = new();
@@ -70,19 +69,19 @@ public abstract class Statement
             {
                 //Execute the custom Parser
                 bool result = registration.CustomParser.Invoke(list);
-                if(!result) //And if it couldn't parse the TokenList, jump over the parsing stuff and continue with the next StatementRegistration
+                if (!result) //And if it couldn't parse the TokenList, jump over the parsing stuff and continue with the next StatementRegistration
                     goto next;
             }
-            
-            
+
+
             //Instantiate the matching subclass
             statement = (Activator.CreateInstance(registration.Statement) as Statement)!;
-            
+
 
             //Remove the tokens that match from the token list
-            if(!statement.CutTokensManually())
+            if (!statement.CutTokensManually())
                 list.List.RemoveRange(0, registration.Match.Length);
-                
+            
             //Invoke its OnParse() callback
             statement.OnParse(ref list);
             break;
@@ -92,12 +91,12 @@ public abstract class Statement
 
         if (statement != null)
             return statement;
-        
-        
+
+
         Interpreter.LogError($"Couldn't parse {list.Peek()}");
         return null!;
     }
-    
+
     public static Statement[] ParseMultiple(TokenList list)
     {
         //If the Parser wasn't initialized yet, do it now
@@ -124,15 +123,14 @@ public abstract class Statement
             Logger.LogCritical("Couldn't get the current Assembly");
             return;
         }
-        
+
         //Iterate through all types which inherit from Statement
         foreach (Type type in ParsingUtility.GetAllInheritors(typeof(Statement)))
         {
-            
             //Ignore abstract Statement inheritors
-            if(type.IsAbstract)
+            if (type.IsAbstract)
                 continue;
-            
+
             //Get a static method called OnInitialize inside of them
             MethodInfo? initMethod = type.GetMethod("OnInitialize");
 
@@ -143,9 +141,15 @@ public abstract class Statement
                 initMethod.Invoke(null, null);
         }
 
-        //Sort registrations
-        Registrations.Sort(((x, y) => y.Match.Length - x.Match.Length));
-        
+        //Sort registration
+        Registrations.Sort((x, y) =>
+            y.Match.Length - x.Match.Length +   //Sorts by match length
+            (   //And by whether x or y have a custom parser
+                Convert.ToInt16(y.CustomParser != null) -
+                Convert.ToInt16(x.CustomParser != null)
+            )
+        );
+
         isInitialized = true;
     }
 
