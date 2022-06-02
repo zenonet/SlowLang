@@ -42,7 +42,10 @@ public class FunctionCall : Statement
         //Find everything between the braces
         TokenList betweenBraces = ParsingUtility.FindBetweenBraces(list, TokenType.OpeningBrace, TokenType.ClosingBrace, Logger);
 
+        //Remove the parameter list
         list.RemoveRange(..betweenBraces.List.Count);
+        //Remove the closing brace
+        list.Pop();
         
         List<Statement> parameters = new();
         while (betweenBraces.List.Count > 0)   
