@@ -73,7 +73,7 @@ public class TokenList : IEnumerable<Token>
     /// <param name="range">The range to remove</param>
     public void RemoveRange(Range range)
     {
-        if(List.Count > range.End.Value)
+        if(List.Count < range.End.Value)
             List.Clear();
         else
             List.RemoveRange(range.Start.Value, range.End.Value - range.Start.Value);
