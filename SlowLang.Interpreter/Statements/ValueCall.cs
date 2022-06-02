@@ -23,6 +23,10 @@ public class ValueCall : Statement
         Statement.Register(StatementRegistration.Create<ValueCall>(
             TokenType.Float
             ));
+        
+        Statement.Register(StatementRegistration.Create<ValueCall>(
+            TokenType.Bool
+            ));
     }
 
 
