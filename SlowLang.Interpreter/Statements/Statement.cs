@@ -15,6 +15,8 @@ public abstract class Statement
 
     private static bool isInitialized = false;
 
+    public int LineNumber { get; private set; }
+    
     /// <summary>
     /// If this returns true, the Statement will have to cut itself from the token list
     /// </summary>
