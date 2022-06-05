@@ -25,6 +25,15 @@ public class FunctionDefinition
         Parameters = parameters;
     }
 
-    public static FunctionDefinition GetFunctionDefinition(string name) =>
-        DefinedFunctions.First(fun => fun.Identifier == name);
+    public static FunctionDefinition? GetFunctionDefinition(string name)
+    {
+        try
+        {
+            return DefinedFunctions.First(fun => fun.Identifier == name);
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
 }

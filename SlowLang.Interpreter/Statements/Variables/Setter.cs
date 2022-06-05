@@ -45,7 +45,7 @@ public class Setter : Statement
         Value val = value.Execute();
         
         if(val == SlowVoid.I)
-            Interpreter.LogError($"{value} doesn't have a return value");
+            Interpreter.LogError($"{value} doesn't have a return value", LineNumber);
         
         Value.Variables[varName] = val;
         return SlowVoid.I;

@@ -29,9 +29,11 @@ public static class Interpreter
     internal static readonly ILogger ErrorLogger = LoggerFactory.CreateLogger("SlowLang.Errors");
 
 
-    internal static void LogError(string errorMessage)
+    internal static void LogError(string errorMessage, Statement statement) => LogError(errorMessage, statement.LineNumber);
+
+    internal static void LogError(string errorMessage, int lineNumber)
     {
-        ErrorLogger.LogError(errorMessage);
+        ErrorLogger.LogError($"Error is line {lineNumber}: " + errorMessage);
         Environment.Exit(0);
     }
 

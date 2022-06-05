@@ -41,13 +41,17 @@ public class WhileLoop : Statement
         
         //Check if the next token is an opening curly brace. If not, throw an error
         if(list.Peek().Type != TokenType.OpeningCurlyBrace)
-            Interpreter.LogError("Unexpected token " + list.Peek().RawContent);
+            Interpreter.LogError("Unexpected token " + list.Peek().RawContent, LineNumber);
 
         list.Pop(); //Remove opening curly brace
-
-        TokenList rawCodeBlock =
+        
+        TokenList? rawCodeBlock =
             ParsingUtility.FindBetweenBraces(list, TokenType.OpeningCurlyBrace, TokenType.ClosingCurlyBrace, Logger);
 
+        //Error handling
+        if(rawCodeBlock is null)
+            Interpreter.LogError("Invalid curly brace pattern", LineNumber);
+        
         //Remove the CodeBlock from the TokenList
         list.RemoveRange(..rawCodeBlock.List.Count );
 

@@ -79,7 +79,9 @@ public abstract class Statement
             //Instantiate the matching subclass
             statement = (Activator.CreateInstance(registration.Statement) as Statement)!;
 
-
+            //Set the line number
+            statement.LineNumber = list.List[0].LineNumber;
+            
             //Remove the tokens that match from the token list
             if (!statement.CutTokensManually())
                 list.List.RemoveRange(0, registration.Match.Length);
@@ -95,7 +97,7 @@ public abstract class Statement
             return statement;
 
 
-        Interpreter.LogError($"Couldn't parse {list.Peek()}");
+        Interpreter.LogError($"Unexpected string '{list.Peek().RawContent}'", list.Peek().LineNumber);
         return null!;
     }
 

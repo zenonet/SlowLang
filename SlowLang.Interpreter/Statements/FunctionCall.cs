@@ -34,7 +34,12 @@ public class FunctionCall : Statement
     protected override void OnParse(ref TokenList list)
     {
         //Find the FunctionDefinition this FunctionCall belongs to
-        Reference = FunctionDefinition.GetFunctionDefinition(list.Pop().RawContent);
+        string name = list.Pop().RawContent;
+        Reference = FunctionDefinition.GetFunctionDefinition(name);
+        if (Reference is null)
+        {
+            Interpreter.LogError($"There is no function called {name} defined", LineNumber);
+        }
         
         //Cut the opening bracket
         list.Pop();
@@ -72,7 +77,7 @@ public class FunctionCall : Statement
             Value v = parameter.Execute();
             
             if(v == SlowVoid.I)
-                Interpreter.LogError($"{parameter} doesn't have a return value");
+                Interpreter.LogError($"{parameter} doesn't have a return value", LineNumber);
 
             executedParameters.Add(v);
         }

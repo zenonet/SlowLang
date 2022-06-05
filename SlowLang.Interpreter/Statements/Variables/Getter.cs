@@ -28,7 +28,7 @@ public class Getter : Statement
     public override Value Execute()
     {
         if (!Value.Variables.ContainsKey(VariableName))
-            Interpreter.LogError("There is no variable called " + VariableName);
+            Interpreter.LogError("There is no variable called " + VariableName, LineNumber);
 
         //Interpreter.LogError makes the process exit so this will only run if the variable exists
         return Value.Variables[VariableName];
