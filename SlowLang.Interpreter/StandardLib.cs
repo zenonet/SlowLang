@@ -12,13 +12,17 @@ public static class StandardLib
             "print",
             (parameters) =>
             {
-                SlowLang.Interpreter.Interpreter.OutputStream?.WriteLine(((SlowString)parameters[0]).Value);
+                SlowLang.Interpreter.Interpreter.OutputStream?.WriteLine(((SlowString) parameters[0]).Value);
                 return SlowVoid.I;
             }
         ));
-        
+
         DefinedFunctions.Add(new FunctionDefinition(
-            "getInput",
-            _ => new SlowString(Interpreter.InputStream!.ReadLine()!)));
+            "getTime",
+            _ => new SlowString(DateTime.Now.ToShortTimeString())));
+
+        DefinedFunctions.Add(new FunctionDefinition(
+            "getDate",
+            _ => new SlowString(DateTime.Now.ToShortDateString())));
     }
 }
