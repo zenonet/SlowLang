@@ -8,26 +8,15 @@ namespace SlowLang.Interpreter.Statements;
 public class ValueCall : Statement
 {
     private Value? value;
-    
+
     public static void OnInitialize()
     {
         Logger.LogInformation("Now initializing ValueCall");
-        
-        Statement.Register(StatementRegistration.Create<ValueCall>(
-            TokenType.String
-            ));
-        
-        Statement.Register(StatementRegistration.Create<ValueCall>(
-            TokenType.Int
-            ));
-        
-        Statement.Register(StatementRegistration.Create<ValueCall>(
-            TokenType.Float
-            ));
-        
-        Statement.Register(StatementRegistration.Create<ValueCall>(
-            TokenType.Bool
-            ));
+
+        StatementRegistration.Builder<ValueCall>().AddMatchSequence(TokenType.String).Register();
+        StatementRegistration.Builder<ValueCall>().AddMatchSequence(TokenType.Int).Register();
+        StatementRegistration.Builder<ValueCall>().AddMatchSequence(TokenType.Float).Register();
+        StatementRegistration.Builder<ValueCall>().AddMatchSequence(TokenType.Bool).Register();
     }
 
 
