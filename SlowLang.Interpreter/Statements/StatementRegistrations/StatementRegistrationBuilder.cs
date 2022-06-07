@@ -62,4 +62,9 @@ public class StatementRegistrationBuilder
                 $"A StatementRegistration needs to have a StatementReference selected. Select one using StatementRegistrationBuilder.{nameof(AddStatementReference)}");
         return new StatementRegistration(statement, match, customParser, leadingStatement);
     }
+
+    /// <summary>
+    /// Builds the StatementRegistration and registers it
+    /// </summary>
+    public void Register() => Build().Register();
 }
