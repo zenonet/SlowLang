@@ -51,10 +51,13 @@ public class FunctionCall : Statement
         list.Pop();
 
         //Find everything between the braces
-        TokenList betweenBraces = ParsingUtility.FindBetweenBraces(list, TokenType.OpeningBrace, TokenType.ClosingBrace, Logger);
-
+        TokenList? betweenBraces = ParsingUtility.FindBetweenBraces(list, TokenType.OpeningBrace, TokenType.ClosingBrace, Logger);
+        
+        if(betweenBraces is null)
+            Interpreter.LogError("Closing brace missing", LineNumber);
+        
         //Remove the parameter list
-        list.RemoveRange(..betweenBraces.List.Count);
+        list.RemoveRange(..betweenBraces!.List.Count);
         //Remove the closing brace
         list.Pop();
 
@@ -64,7 +67,7 @@ public class FunctionCall : Statement
             //Parse the parameter
             parameters.Add(Parse(ref betweenBraces));
 
-            if (betweenBraces.Peek() != null && betweenBraces.Peek().Type is TokenType.Comma)
+            if (betweenBraces.Peek().Type is TokenType.Comma)
                 betweenBraces.Pop();
         }
 

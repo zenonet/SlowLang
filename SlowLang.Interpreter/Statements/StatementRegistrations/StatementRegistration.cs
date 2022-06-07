@@ -5,14 +5,14 @@ namespace SlowLang.Interpreter.Statements.StatementRegistrations;
 public readonly struct StatementRegistration
 {
     public readonly Type Statement;
-    public readonly TokenType[]? Match;
+    public readonly TokenType[] Match;
     public readonly Type? StatementMatch;
 
     public readonly CustomParser? CustomParser = null;
 
     internal StatementRegistration(Type statement, TokenType[]? match, CustomParser? customParser = null, Type? statementMatch = null)
     {
-        Match = match;
+        Match = match ?? new TokenType[]{};
         Statement = statement;
         CustomParser = customParser;
         StatementMatch = statementMatch;

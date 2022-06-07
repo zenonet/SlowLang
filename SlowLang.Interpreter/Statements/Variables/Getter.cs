@@ -7,7 +7,7 @@ namespace SlowLang.Interpreter.Statements.Variables;
 
 public class Getter : Statement
 {
-    public string VariableName;
+    public string VariableName = null!;
 
     public static void OnInitialize()
     {

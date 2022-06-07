@@ -30,9 +30,14 @@ public class WhileLoop : Statement
         list.Pop(); //Remove the opening bracket
 
         //Get the condition
-        TokenList rawCondition =
+        TokenList? rawCondition =
             ParsingUtility.FindBetweenBraces(list, TokenType.OpeningBrace, TokenType.ClosingBrace, Logger);
 
+        if (rawCondition is null)
+        {
+            Interpreter.LogError("Missing closing brace");
+            throw new Exception();
+        }
 
         //Remove the condition from the TokenList
         list.RemoveRange(..rawCondition.List.Count);
@@ -52,7 +57,10 @@ public class WhileLoop : Statement
 
         //Error handling
         if (rawCodeBlock is null)
+        {
             Interpreter.LogError("Invalid curly brace pattern", LineNumber);
+            throw new Exception();
+        }
 
         //Remove the CodeBlock from the TokenList
         list.RemoveRange(..rawCodeBlock.List.Count);
@@ -62,8 +70,6 @@ public class WhileLoop : Statement
 
 
         codeBlock = ParseMultiple(rawCodeBlock);
-
-        ;
     }
 
     public override Value Execute()

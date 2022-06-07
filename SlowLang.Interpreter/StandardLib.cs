@@ -12,7 +12,7 @@ public static class StandardLib
             "print",
             (parameters) =>
             {
-                SlowLang.Interpreter.Interpreter.OutputStream?.WriteLine(((SlowString) parameters[0]).Value);
+                Interpreter.OutputStream?.WriteLine(((SlowString) parameters[0]).Value);
                 return SlowVoid.I;
             }
         ));

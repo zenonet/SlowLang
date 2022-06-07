@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using SlowLang.Interpreter.Statements;
+using System.Diagnostics.Contracts;
 
 namespace SlowLang.Interpreter.Tokens;
 
@@ -18,11 +18,13 @@ public class TokenList : IEnumerable<Token>
     /// </summary>
     /// <returns>The first token</returns>
     /// <param name="offset">Offsets the index to peek at</param>
+    [Pure]
     public Token Peek(int offset = 0)
     {
-        if(List.Count > offset)
+        if (List.Count > offset)
             return List[offset];
-
+        
+        Interpreter.LogError("Invalid syntax at end of file");
         return null!;
     }
 
@@ -34,13 +36,13 @@ public class TokenList : IEnumerable<Token>
     {
         if (List.Count < offset)
             return null!;
-        
+
         Token first = List[offset];
         List.RemoveAt(offset);
         return first;
     }
 
-    
+
     /// <summary>
     /// Splits a TokenList at a separator
     /// </summary>
@@ -50,9 +52,9 @@ public class TokenList : IEnumerable<Token>
     {
         List<TokenList> tokenLists = new();
 
-        if(List.Count > 0)
+        if (List.Count > 0)
             tokenLists.Add(new TokenList());
-        
+
         foreach (Token token in List)
         {
             if (token.Type == separator)
@@ -73,7 +75,7 @@ public class TokenList : IEnumerable<Token>
     /// <param name="range">The range to remove</param>
     public void RemoveRange(Range range)
     {
-        if(List.Count < range.End.Value)
+        if (List.Count < range.End.Value)
             List.Clear();
         else
             List.RemoveRange(range.Start.Value, range.End.Value - range.Start.Value);

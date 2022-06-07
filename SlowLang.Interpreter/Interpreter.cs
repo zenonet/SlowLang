@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using SlowLang.Interpreter.Statements;
 using SlowLang.Interpreter.Tokens;
-using SlowLang.Interpreter.Values;
 
 namespace SlowLang.Interpreter;
 
@@ -24,7 +23,7 @@ public static class Interpreter
             ;
     });
 
-    private static readonly ILogger Logger = LoggerFactory.CreateLogger("SlowLang.Interpreter");
+    internal static readonly ILogger Logger = LoggerFactory.CreateLogger("SlowLang.Interpreter");
 
     internal static readonly ILogger ErrorLogger = LoggerFactory.CreateLogger("SlowLang.Errors");
 
@@ -34,6 +33,11 @@ public static class Interpreter
     internal static void LogError(string errorMessage, int lineNumber)
     {
         ErrorLogger.LogError($"Error is line {lineNumber}: " + errorMessage);
+        Environment.Exit(0);
+    }
+    internal static void LogError(string errorMessage)
+    {
+        ErrorLogger.LogError("Error: " + errorMessage);
         Environment.Exit(0);
     }
 

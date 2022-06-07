@@ -14,7 +14,7 @@ public abstract class Statement
     protected static readonly ILogger Logger = Interpreter.LoggerFactory.CreateLogger("SlowLang.Statements");
 
 
-    private static bool isInitialized = false;
+    private static bool isInitialized;
 
     public int LineNumber { get; private set; }
     
