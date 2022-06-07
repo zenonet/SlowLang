@@ -13,10 +13,12 @@ public class Getter : Statement
     {
         Logger.LogInformation("Now initializing Getter");
 
-        Statement.Register(StatementRegistration.Create<Getter>(
-            tokenList => Value.Variables.ContainsKey(tokenList.Peek().RawContent), //Check if a variable with that name exists
-            TokenType.Keyword
-        ));
+        StatementRegistration.Builder<Getter>()
+            .AddCustomParser(
+                tokenList => Value.Variables.ContainsKey(tokenList.Peek().RawContent) //Check if a variable with that name exists
+            )
+            .AddMatchSequence(TokenType.Keyword)
+            .Register();
     }
 
     protected override bool CutTokensManually() => true;
