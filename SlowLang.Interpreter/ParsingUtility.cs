@@ -17,10 +17,10 @@ public static class ParsingUtility
     /// <param name="closingBracket">The TokenType which ends a brace pair</param>
     /// <param name="logger">A logger to use when logging errors</param>
     /// <returns>Everything between the braces</returns>
-    public static TokenList FindBetweenBraces(TokenList input, TokenType openingBracket, TokenType closingBracket, ILogger logger)
+    public static TokenList? FindBetweenBraces(TokenList input, TokenType openingBracket, TokenType closingBracket, ILogger logger)
     {
         int openedBraces = 1;
-        TokenList codeBlock = null;
+        TokenList? codeBlock = null;
 
         //Tracks all curly braces until it finds the matching one
         for (var i = 0; i < input.List.Count; i++)
