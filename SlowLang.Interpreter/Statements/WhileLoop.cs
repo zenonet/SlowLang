@@ -1,4 +1,5 @@
-﻿using SlowLang.Interpreter.Tokens;
+﻿using SlowLang.Interpreter.Statements.StatementRegistrations;
+using SlowLang.Interpreter.Tokens;
 using SlowLang.Interpreter.Values;
 
 namespace SlowLang.Interpreter.Statements;
@@ -12,7 +13,7 @@ public class WhileLoop : Statement
     
     public static void OnInitialize()
     {
-        Statement.Register(StatementRegistration.CreateWithCustomParser<WhileLoop>(
+        Statement.Register(StatementRegistration.Create<WhileLoop>(
             tokenList => tokenList.Peek().RawContent == "while",
             TokenType.Keyword,
             TokenType.OpeningBrace

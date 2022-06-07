@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using SlowLang.Interpreter.Statements.StatementRegistrations;
 using SlowLang.Interpreter.Tokens;
 using SlowLang.Interpreter.Values;
 
@@ -12,7 +13,7 @@ public class Getter : Statement
     {
         Logger.LogInformation("Now initializing Getter");
 
-        Statement.Register(StatementRegistration.CreateWithCustomParser<Getter>(
+        Statement.Register(StatementRegistration.Create<Getter>(
             tokenList => Value.Variables.ContainsKey(tokenList.Peek().RawContent), //Check if a variable with that name exists
             TokenType.Keyword
         ));

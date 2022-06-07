@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using SlowLang.Interpreter.Statements.StatementRegistrations;
 using SlowLang.Interpreter.Tokens;
 using SlowLang.Interpreter.Values;
 
@@ -18,17 +19,22 @@ public class FunctionCall : Statement
         Reference = reference;
         Parameters = parameters;
     }
-    public FunctionCall(){}
+
+    public FunctionCall()
+    {
+    }
 
     public static void OnInitialize()
     {
         Logger.LogInformation("Now initializing FunctionCall");
-        Statement.Register(StatementRegistration.Create<FunctionCall>(
-            TokenType.Keyword,
-            TokenType.OpeningBrace
-        ));
+        StatementRegistration.Builder<FunctionCall>()
+            .AddMatchSequence(
+                TokenType.Keyword,
+                TokenType.OpeningBrace)
+            .Build()
+            .Register();
     }
-    
+
     protected override bool CutTokensManually() => true;
 
     protected override void OnParse(ref TokenList list)
@@ -40,10 +46,10 @@ public class FunctionCall : Statement
         {
             Interpreter.LogError($"There is no function called {name} defined", LineNumber);
         }
-        
+
         //Cut the opening bracket
         list.Pop();
-        
+
         //Find everything between the braces
         TokenList betweenBraces = ParsingUtility.FindBetweenBraces(list, TokenType.OpeningBrace, TokenType.ClosingBrace, Logger);
 
@@ -51,9 +57,9 @@ public class FunctionCall : Statement
         list.RemoveRange(..betweenBraces.List.Count);
         //Remove the closing brace
         list.Pop();
-        
+
         List<Statement> parameters = new();
-        while (betweenBraces.List.Count > 0)   
+        while (betweenBraces.List.Count > 0)
         {
             //Parse the parameter
             parameters.Add(Parse(ref betweenBraces));
@@ -61,8 +67,9 @@ public class FunctionCall : Statement
             if (betweenBraces.Peek() != null && betweenBraces.Peek().Type is TokenType.Comma)
                 betweenBraces.Pop();
         }
+
         this.Parameters = parameters.ToArray();
-        
+
 
         if (list.Peek() != null! && list.Peek().Type is TokenType.Semicolon)
             list.Pop();
@@ -71,18 +78,17 @@ public class FunctionCall : Statement
     public override Value Execute()
     {
         List<Value> executedParameters = new();
-        
+
         foreach (Statement parameter in Parameters)
         {
             Value v = parameter.Execute();
-            
-            if(v == SlowVoid.I)
+
+            if (v == SlowVoid.I)
                 Interpreter.LogError($"{parameter} doesn't have a return value", LineNumber);
 
             executedParameters.Add(v);
         }
 
         return Reference?.OnInvoke.Invoke(executedParameters.ToArray())!;
-
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.Logging;
+using SlowLang.Interpreter.Statements.StatementRegistrations;
 using SlowLang.Interpreter.Tokens;
 using SlowLang.Interpreter.Values;
 
@@ -30,7 +31,7 @@ public abstract class Statement
 
     private static readonly List<StatementRegistration> Registrations = new();
 
-    protected static void Register(StatementRegistration registration)
+    public static void Register(StatementRegistration registration)
     {
         //Check if the registration is valid
         if (registration.Statement.BaseType == typeof(Statement))
