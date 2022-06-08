@@ -18,11 +18,21 @@ public static class StandardLib
         ));
 
         DefinedFunctions.Add(new FunctionDefinition(
-            "getTime",
-            _ => new SlowString(DateTime.Now.ToShortTimeString())));
+                "getTime",
+                _ => new SlowString(DateTime.Now.ToShortTimeString())
+            )
+        );
 
         DefinedFunctions.Add(new FunctionDefinition(
-            "getDate",
-            _ => new SlowString(DateTime.Now.ToShortDateString())));
+                "getInput",
+                _ => new SlowString(Interpreter.InputStream!.ReadLine()!)
+            )
+        );
+
+        DefinedFunctions.Add(new FunctionDefinition(
+                "getDate",
+                _ => new SlowString(DateTime.Now.ToShortDateString())
+            )
+        );
     }
 }
