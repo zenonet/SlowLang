@@ -43,6 +43,40 @@ public class TokenList : IEnumerable<Token>
         return false;
     }
 
+    public void TrimStart(params TokenType[] typesToTrim)
+    {
+        while (true)
+        {
+            foreach (TokenType type in typesToTrim)
+            {
+                if (List.Count < 1)
+                    return;
+
+                if (List[0].Type != type)
+                    continue;
+
+                List.RemoveAt(0);
+            }
+        }
+    }
+
+    public void TrimEnd(params TokenType[] typesToTrim)
+    {
+        while (true)
+        {
+            foreach (TokenType type in typesToTrim)
+            {
+                if (List.Count < 1)
+                    return;
+
+                if (List[^1].Type != type)
+                    continue;
+
+                List.RemoveAt(List.Count - 1);
+            }
+        }
+    }
+
     /// <summary>
     /// Gets the first token and removes it
     /// </summary>
