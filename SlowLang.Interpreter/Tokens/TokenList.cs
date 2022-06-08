@@ -43,9 +43,16 @@ public class TokenList : IEnumerable<Token>
         return false;
     }
 
+#region TrimMethods
+
+    /// <summary>
+    /// Trims all occurrences of TokenTypes from the start of the TokenList
+    /// WARNING: This method wasn't tested yet (because i was too lazy)
+    /// </summary>
+    /// <param name="typesToTrim">An array of all TokenType that should get cut</param>
     public void TrimStart(params TokenType[] typesToTrim)
     {
-        while (true)
+        while (typesToTrim.Contains(List[0].Type))
         {
             foreach (TokenType type in typesToTrim)
             {
@@ -59,10 +66,29 @@ public class TokenList : IEnumerable<Token>
             }
         }
     }
+    /// <summary>
+    /// Trims all occurrences of a TokenType from the start of the TokenList
+    /// WARNING: This method wasn't tested yet (because i was too lazy)
+    /// </summary>
+    /// <param name="typeToTrim">The TokenType that should get cut</param>
+    public void TrimStart(TokenType typeToTrim)
+    {
+        //I created these TrimStart and TrimEnd overloads with just a single TokenType because this won't allocate an array just for one TokenType
+        while (List[0].Type == typeToTrim)
+        {
+            List.RemoveAt(0);
+        }
+    }
 
+
+    /// <summary>
+    /// Trims all occurrences of TokenTypes from the end of the TokenList
+    /// WARNING: This method wasn't tested yet (because i was too lazy)
+    /// </summary>
+    /// <param name="typesToTrim">An array of all TokenType that should get cut</param>
     public void TrimEnd(params TokenType[] typesToTrim)
     {
-        while (true)
+        while (typesToTrim.Contains(List[0].Type))
         {
             foreach (TokenType type in typesToTrim)
             {
@@ -73,9 +99,26 @@ public class TokenList : IEnumerable<Token>
                     continue;
 
                 List.RemoveAt(List.Count - 1);
+                
             }
         }
     }
+    
+    /// <summary>
+    /// Trims all occurrences of a TokenType from the end of the TokenList
+    /// WARNING: This method wasn't tested yet (because i was too lazy)
+    /// </summary>
+    /// <param name="typeToTrim">The TokenType that should get cut</param>
+    public void TrimEnd(TokenType typeToTrim)
+    {
+        //I created these TrimStart and TrimEnd overloads with just a single TokenType because this won't allocate an array just for one TokenType
+        while (List[^0].Type == typeToTrim)
+        {
+            List.RemoveAt(List.Count - 1);
+        }
+    }
+
+    #endregion
 
     /// <summary>
     /// Gets the first token and removes it
