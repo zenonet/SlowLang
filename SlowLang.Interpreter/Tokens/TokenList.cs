@@ -23,9 +23,24 @@ public class TokenList : IEnumerable<Token>
     {
         if (List.Count > offset)
             return List[offset];
-        
+
         Interpreter.LogError("Invalid syntax at end of file");
         return null!;
+    }
+
+
+    /// <summary>
+    /// Checks if the token at a specific position is of a specific TokenType
+    /// </summary>
+    /// <param name="expectedType">The TokenType that is expected</param>
+    /// <param name="offset">Offsets the index to look at</param>
+    [Pure]
+    public bool ExpectToken(TokenType expectedType, int offset = 0)
+    {
+        if (List.Count > offset)
+            return List[0].Type == expectedType;
+
+        return false;
     }
 
     /// <summary>
