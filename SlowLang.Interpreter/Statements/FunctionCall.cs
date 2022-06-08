@@ -67,14 +67,14 @@ public class FunctionCall : Statement
             //Parse the parameter
             parameters.Add(Parse(ref betweenBraces));
 
-            if (betweenBraces.Peek().Type is TokenType.Comma)
+            if (betweenBraces.ExpectToken(TokenType.Comma))
                 betweenBraces.Pop();
         }
 
         this.Parameters = parameters.ToArray();
 
 
-        if (list.Peek() != null! && list.Peek().Type is TokenType.Semicolon)
+        if (list.ExpectToken(TokenType.Semicolon))
             list.Pop();
     }
 
