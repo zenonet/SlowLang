@@ -44,6 +44,11 @@ public abstract class Statement
     }
 
 
+    /// <summary>
+    /// Parses a single statement
+    /// </summary>
+    /// <param name="list">A TokenList to parse from</param>
+    /// <returns>A fully configured Statement</returns>
     public static Statement Parse(ref TokenList list)
     {
         //If the Parser wasn't initialized yet, do it now
