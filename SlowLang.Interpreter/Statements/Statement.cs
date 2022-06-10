@@ -125,7 +125,7 @@ public abstract class Statement
     /// <summary>
     /// Calls the static OnInitialize() method on every inheritor of Statement
     /// </summary>
-    public static void Initialize()
+    private static void Initialize()
     {
         Assembly? asm = Assembly.GetAssembly(typeof(Statement));
         if (asm is null)
