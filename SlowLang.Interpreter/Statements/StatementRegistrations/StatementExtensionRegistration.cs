@@ -4,24 +4,33 @@ namespace SlowLang.Interpreter.Statements.StatementRegistrations;
 
 public struct StatementExtensionRegistration
 {
-    public readonly Statement BaseStatement;
-    public readonly Statement ExtensionStatement;
+    public readonly Type BaseStatement;
+    public readonly Type ExtensionStatement;
     public readonly CustomParser? CustomParser;
     public readonly TokenType[] Match;
 
-    public StatementExtensionRegistration(Statement extensionStatement, Statement baseStatement, CustomParser customParser, params TokenType[] match)
+    private StatementExtensionRegistration(Type extensionStatement, Type baseStatement, CustomParser? customParser, params TokenType[] match)
     {
         Match = match;
         CustomParser = customParser;
         ExtensionStatement = extensionStatement;
         BaseStatement = baseStatement;
     }
-    
-    public StatementExtensionRegistration(Statement extensionStatement, Statement baseStatement, params TokenType[] match)
+
+    public static StatementExtensionRegistration CreateStatementExtensionRegistration<TBase, TExtension>(
+        CustomParser customParser,
+        params TokenType[] match)
+        where TBase : Statement
+        where TExtension : Statement
     {
-        Match = match;
-        CustomParser = null;
-        ExtensionStatement = extensionStatement;
-        BaseStatement = baseStatement;
+        return new StatementExtensionRegistration(typeof(TExtension), typeof(TBase), customParser);
+    }
+
+    public static StatementExtensionRegistration CreateStatementExtensionRegistration<TBase, TExtension>(
+        params TokenType[] match)
+        where TBase : Statement
+        where TExtension : Statement
+    {
+        return new StatementExtensionRegistration(typeof(TExtension), typeof(TBase), null);
     }
 }
