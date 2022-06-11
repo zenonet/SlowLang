@@ -7,8 +7,8 @@ namespace SlowLang.Interpreter.Statements.Variables;
 
 public class Setter : Statement
 {
-    private Statement value;
-    private string varName;
+    private Statement? value;
+    private string? varName;
 
     public static void OnInitialize()
     {
@@ -43,12 +43,12 @@ public class Setter : Statement
 
     public override Value Execute()
     {
-        Value val = value.Execute();
+        Value val = value!.Execute();
 
         if (val == SlowVoid.I)
             Interpreter.LogError($"{value} doesn't have a return value", LineNumber);
 
-        Value.Variables[varName] = val;
+        Value.Variables[varName!] = val;
         return SlowVoid.I;
     }
 }
