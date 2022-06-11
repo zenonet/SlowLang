@@ -11,7 +11,7 @@ public readonly struct StatementRegistration
 
     internal StatementRegistration(Type statement, TokenType[]? match, CustomParser? customParser = null)
     {
-        Match = match ?? new TokenType[]{};
+        Match = match ?? Array.Empty<TokenType>();
         Statement = statement;
         CustomParser = customParser;
     }
