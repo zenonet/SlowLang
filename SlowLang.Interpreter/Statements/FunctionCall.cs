@@ -27,12 +27,7 @@ public class FunctionCall : Statement
     public static void OnInitialize()
     {
         Logger.LogInformation("Now initializing FunctionCall");
-        StatementRegistration.Builder<FunctionCall>()
-            .AddMatchSequence(
-                TokenType.Keyword,
-                TokenType.OpeningBrace)
-            .Build()
-            .Register();
+        StatementRegistration.Create<FunctionCall>(TokenType.Keyword, TokenType.OpeningBrace).Register();
     }
 
     protected override bool CutTokensManually() => true;
@@ -52,10 +47,10 @@ public class FunctionCall : Statement
 
         //Find everything between the braces
         TokenList? betweenBraces = ParsingUtility.FindBetweenBraces(list, TokenType.OpeningBrace, TokenType.ClosingBrace, Logger);
-        
-        if(betweenBraces is null)
+
+        if (betweenBraces is null)
             Interpreter.LogError("Closing brace missing", LineNumber);
-        
+
         //Remove the parameter list
         list.RemoveRange(..betweenBraces!.List.Count);
         //Remove the closing brace

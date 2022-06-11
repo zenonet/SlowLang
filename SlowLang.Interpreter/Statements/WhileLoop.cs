@@ -11,12 +11,9 @@ public class WhileLoop : Statement
 
     public static void OnInitialize()
     {
-        StatementRegistration.Builder<WhileLoop>()
-            .AddCustomParser(
-                tokenList => tokenList.Peek().RawContent == "while")
-            .AddMatchSequence(
-                TokenType.Keyword,
-                TokenType.OpeningBrace
+        StatementRegistration.Create<WhileLoop>(
+                tokenList => tokenList.Peek().RawContent == "while",
+                TokenType.Keyword, TokenType.OpeningBrace
             )
             .Register();
     }

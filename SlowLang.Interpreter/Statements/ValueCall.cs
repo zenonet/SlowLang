@@ -13,10 +13,10 @@ public class ValueCall : Statement
     {
         Logger.LogInformation("Now initializing ValueCall");
 
-        StatementRegistration.Builder<ValueCall>().AddMatchSequence(TokenType.String).Register();
-        StatementRegistration.Builder<ValueCall>().AddMatchSequence(TokenType.Int).Register();
-        StatementRegistration.Builder<ValueCall>().AddMatchSequence(TokenType.Float).Register();
-        StatementRegistration.Builder<ValueCall>().AddMatchSequence(TokenType.Bool).Register();
+        StatementRegistration.Create<ValueCall>(TokenType.String).Register();
+        StatementRegistration.Create<ValueCall>(TokenType.Int).Register();
+        StatementRegistration.Create<ValueCall>(TokenType.Float).Register();
+        StatementRegistration.Create<ValueCall>(TokenType.Bool).Register();
     }
 
 

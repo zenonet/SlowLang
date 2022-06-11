@@ -30,7 +30,7 @@ public abstract class Statement
     }
 
     private static readonly List<StatementRegistration> Registrations = new();
-
+    
     public static void Register(StatementRegistration registration)
     {
         //Check if the registration is valid
@@ -41,6 +41,20 @@ public abstract class Statement
         }
 
         Logger.LogWarning("A StatementRegistration exists, which doesn't refer to a subclass of Statement");
+    }
+    
+    private static readonly List<StatementExtensionRegistration> ExtensionRegistrations = new();
+
+    public static void Register(StatementExtensionRegistration registration)
+    {
+        //Check if the registration is valid
+        if (registration.ExtensionStatement.BaseType == typeof(Statement))
+        {
+            ExtensionRegistrations.Add(registration);
+            return;
+        }
+
+        Logger.LogWarning("A StatementExtensionRegistration exists, which doesn't refer to a subclass of Statement");
     }
 
 

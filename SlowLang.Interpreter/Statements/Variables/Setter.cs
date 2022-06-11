@@ -13,8 +13,7 @@ public class Setter : Statement
     public static void OnInitialize()
     {
         Logger.LogInformation("Now initializing Setter");
-        StatementRegistration.Builder<Setter>()
-            .AddMatchSequence(
+        StatementRegistration.Create<Setter>(
                 TokenType.Keyword,
                 TokenType.Equals)
             .Register();

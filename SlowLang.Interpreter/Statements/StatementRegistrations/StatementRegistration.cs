@@ -38,22 +38,7 @@ public readonly struct StatementRegistration
     {
         Statements.Statement.Register(this);
     }
-
-    /// <summary>
-    /// Creates a new StatementRegistrationBuilder and sets the StatementReference
-    /// </summary>
-    /// <typeparam name="T">The Statement to add add the reference for</typeparam>
-    /// <returns>The preconfigured builder</returns>
-    public static StatementRegistrationBuilder Builder<T>() where T : Statement
-    {
-        return new StatementRegistrationBuilder().AddStatementReference<T>();
-    }
     
-    public static StatementRegistrationBuilder Builder()
-    {
-        return new StatementRegistrationBuilder();
-    }
-
     public override string ToString() => Statement.Name + "-Registration";
 }
 

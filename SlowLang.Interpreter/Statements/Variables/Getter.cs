@@ -13,11 +13,9 @@ public class Getter : Statement
     {
         Logger.LogInformation("Now initializing Getter");
 
-        StatementRegistration.Builder<Getter>()
-            .AddCustomParser(
-                tokenList => Value.Variables.ContainsKey(tokenList.Peek().RawContent) //Check if a variable with that name exists
-            )
-            .AddMatchSequence(TokenType.Keyword)
+        StatementRegistration.Create<Getter>(
+                tokenList => Value.Variables.ContainsKey(tokenList.Peek().RawContent), //Check if a variable with that name exists
+                TokenType.Keyword)
             .Register();
     }
 
