@@ -17,7 +17,7 @@ public abstract class Statement
     private static bool isInitialized;
 
     public int LineNumber { get; private set; }
-    
+
     /// <summary>
     /// If this returns true, the Statement will have to cut itself from the token list
     /// </summary>
@@ -30,7 +30,7 @@ public abstract class Statement
     }
 
     private static readonly List<StatementRegistration> Registrations = new();
-    
+
     public static void Register(StatementRegistration registration)
     {
         //Check if the registration is valid
@@ -42,10 +42,10 @@ public abstract class Statement
 
         Logger.LogWarning("A StatementRegistration exists, which doesn't refer to a subclass of Statement");
     }
-    
+
     private static readonly List<StatementExtensionRegistration> ExtensionRegistrations = new();
 
-    public static void Register(StatementExtensionRegistration registration)
+    public static void RegisterExtension(StatementExtensionRegistration registration)
     {
         //Check if the registration is valid
         if (registration.ExtensionStatement.BaseType == typeof(Statement))
@@ -72,10 +72,67 @@ public abstract class Statement
         Statement? statement = null;
         foreach (StatementRegistration registration in Registrations)
         {
-            //Check if the matching sequence in the current registration would fit int o list.List
-            if (registration.Match.Length > list.List.Count)
-                continue;
+            statement ??= ParseStatementFromRegistration(registration, list);
+        }
+        
+        if (statement != null)
+            return statement;
 
+
+        Interpreter.LogError($"Unexpected string '{list.Peek().RawContent}'", list.Peek().LineNumber);
+        return null!;
+    }
+
+    private static Statement? ParseStatementFromRegistration(StatementRegistration registration, TokenList tokenList)
+    {
+        //Check if the matching sequence in the current registration would fit int o list.List
+        if (registration.Match.Length > tokenList.List.Count)
+            return null;
+
+
+        //Iterate through all elements and check if the TokenType matches
+        for (int i = 0; i < registration.Match.Length; i++)
+        {
+            //If it doesn't match:
+            if (tokenList.List[i].Type != registration.Match[i])
+                return null;
+        }
+
+
+        //If the StatementRegistration has a customParser defined:
+        if (registration.CustomParser != null)
+        {
+            //Execute the custom Parser
+            bool result = registration.CustomParser.Invoke(tokenList);
+            if (!result) //And if it couldn't parse the TokenList, jump over the parsing stuff and continue with the next StatementRegistration
+                return null;
+        }
+
+
+        //Instantiate the matching subclass
+        Statement statement = (Activator.CreateInstance(registration.Statement) as Statement)!;
+
+        //Set the line number
+        statement.LineNumber = tokenList.List[0].LineNumber;
+
+        //Remove the tokens that match from the token list
+        if (!statement.CutTokensManually())
+            tokenList.List.RemoveRange(0, registration.Match.Length);
+
+        //Invoke its OnParse() callback
+        statement.OnParse(ref tokenList);
+
+        //ParseStatementExtension(statement, ref tokenList);
+
+        return statement;
+    }
+    
+    private static Statement ParseStatementExtension(Statement statement, ref TokenList list)
+    {
+        foreach (StatementExtensionRegistration registration in ExtensionRegistrations)
+        {
+            if (registration.BaseStatement != statement.GetType())
+                continue;
 
             //Iterate through all elements and check if the TokenType matches
             for (int i = 0; i < registration.Match.Length; i++)
@@ -97,28 +154,27 @@ public abstract class Statement
 
 
             //Instantiate the matching subclass
-            statement = (Activator.CreateInstance(registration.Statement) as Statement)!;
+            statement = (Activator.CreateInstance(registration.ExtensionStatement) as Statement)!;
 
             //Set the line number
             statement.LineNumber = list.List[0].LineNumber;
-            
+
             //Remove the tokens that match from the token list
             if (!statement.CutTokensManually())
                 list.List.RemoveRange(0, registration.Match.Length);
-            
+
             //Invoke its OnParse() callback
             statement.OnParse(ref list);
+
+            ParseStatementExtension(statement, ref list);
+
             break;
 
             next: ;
         }
 
-        if (statement != null)
-            return statement;
 
-
-        Interpreter.LogError($"Unexpected string '{list.Peek().RawContent}'", list.Peek().LineNumber);
-        return null!;
+        throw new NotImplementedException();
     }
 
     public static Statement[] ParseMultiple(TokenList list)
@@ -167,8 +223,8 @@ public abstract class Statement
 
         //Sort registration
         Registrations.Sort((x, y) =>
-            y.Match.Length - x.Match.Length +   //Sorts by match length
-            (   //And by whether x or y have a custom parser
+            y.Match.Length - x.Match.Length + //Sorts by match length
+            ( //And by whether x or y have a custom parser
                 Convert.ToInt16(y.CustomParser != null) -
                 Convert.ToInt16(x.CustomParser != null)
             )

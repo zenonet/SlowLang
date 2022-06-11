@@ -2,7 +2,7 @@
 
 namespace SlowLang.Interpreter.Statements.StatementRegistrations;
 
-public struct StatementExtensionRegistration
+public readonly struct StatementExtensionRegistration
 {
     public readonly Type BaseStatement;
     public readonly Type ExtensionStatement;
@@ -16,6 +16,14 @@ public struct StatementExtensionRegistration
         ExtensionStatement = extensionStatement;
         BaseStatement = baseStatement;
     }
+    
+    
+    public void Register()
+    {
+        Statement.RegisterExtension(this);
+    }
+
+    #region Create methods
 
     public static StatementExtensionRegistration CreateStatementExtensionRegistration<TBase, TExtension>(
         CustomParser customParser,
@@ -33,4 +41,6 @@ public struct StatementExtensionRegistration
     {
         return new StatementExtensionRegistration(typeof(TExtension), typeof(TBase), null);
     }
+
+    #endregion
 }
