@@ -8,7 +8,6 @@ public class StatementRegistrationBuilder
 
     private CustomParser? customParser;
     private TokenType[]? match;
-    private Type? leadingStatement;
     private Type? statement;
 
     /// <summary>
@@ -30,17 +29,7 @@ public class StatementRegistrationBuilder
         this.match = match;
         return this;
     }
-
-    /// <summary>
-    /// Makes the StatementRegistration require a specific Statement in front of this StatementRegistration to gets triggered
-    /// </summary>
-    /// <typeparam name="T">The Statement that needs to get parsed before this one</typeparam>
-    public StatementRegistrationBuilder AddLeadingStatement<T>() where T : Statement
-    {
-        leadingStatement = typeof(T);
-        return this;
-    }
-
+    
     /// <summary>
     /// Adds a reference to a Statement that should get instantiated when all the requirements of this StatementRegistration are fulfilled 
     /// </summary>
@@ -60,7 +49,7 @@ public class StatementRegistrationBuilder
         if (statement is null)
             throw new(
                 $"A StatementRegistration needs to have a StatementReference selected. Select one using StatementRegistrationBuilder.{nameof(AddStatementReference)}");
-        return new StatementRegistration(statement, match, customParser, leadingStatement);
+        return new StatementRegistration(statement, match, customParser);
     }
 
     /// <summary>

@@ -6,16 +6,14 @@ public readonly struct StatementRegistration
 {
     public readonly Type Statement;
     public readonly TokenType[] Match;
-    public readonly Type? StatementMatch;
 
     public readonly CustomParser? CustomParser = null;
 
-    internal StatementRegistration(Type statement, TokenType[]? match, CustomParser? customParser = null, Type? statementMatch = null)
+    internal StatementRegistration(Type statement, TokenType[]? match, CustomParser? customParser = null)
     {
         Match = match ?? new TokenType[]{};
         Statement = statement;
         CustomParser = customParser;
-        StatementMatch = statementMatch;
     }
     
     /// <summary>
@@ -35,11 +33,6 @@ public readonly struct StatementRegistration
         return new StatementRegistration(typeof(T), match, customParser);
     }
 
-    public static StatementRegistration Create<T, TStatementMatch>(CustomParser customParser, params TokenType[] match) where T : Statement where TStatementMatch : Statement
-    {
-        return new StatementRegistration(typeof(T), match, customParser, typeof(TStatementMatch));
-    }
-    
 
     public void Register()
     {
