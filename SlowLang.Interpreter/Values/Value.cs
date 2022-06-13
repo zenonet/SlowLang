@@ -63,4 +63,7 @@ public abstract class Value
         //And return null
         return null;
     }
+
+    //TODO: find a better name since Value.HasValue doesn't really make sense
+    public bool HasValue => this != SlowVoid.I;
 }
