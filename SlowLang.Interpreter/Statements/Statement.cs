@@ -187,6 +187,7 @@ public abstract class Statement
         while (list.List.Count > 0)
         {
             statements.Add(Parse(ref list));
+            list.TrimStart(TokenType.Semicolon);
         }
 
         return statements.ToArray();

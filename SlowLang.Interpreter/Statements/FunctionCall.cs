@@ -67,10 +67,6 @@ public class FunctionCall : Statement
         }
 
         this.Parameters = parameters.ToArray();
-
-
-        if (list.ExpectToken(TokenType.Semicolon))
-            list.Pop();
     }
 
     public override Value Execute()
