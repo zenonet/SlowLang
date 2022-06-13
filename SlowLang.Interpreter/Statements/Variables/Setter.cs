@@ -32,7 +32,7 @@ public class Setter : Statement
 
         value = Statement.Parse(ref list);
 
-        if (list.Peek() != null! && list.Peek().Type is TokenType.Semicolon)
+        if (list.ExpectToken(TokenType.Semicolon))
             list.Pop();
         else
             Logger.LogCritical("Missing semicolon after setter statement");
