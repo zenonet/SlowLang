@@ -78,7 +78,7 @@ public class TokenList : IEnumerable<Token>
         if(List.Count < 1)
             return;
         
-        while (List[0].Type == typeToTrim)
+        while (List.Count > 0 && List[0].Type == typeToTrim)
         {
             List.RemoveAt(0);
         }
@@ -121,7 +121,7 @@ public class TokenList : IEnumerable<Token>
         if(List.Count < 1)
             return;
 
-        while (List[^0].Type == typeToTrim)
+        while (List.Count > 0 && List[^0].Type == typeToTrim)
         {
             List.RemoveAt(List.Count - 1);
         }
