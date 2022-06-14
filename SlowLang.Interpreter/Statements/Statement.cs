@@ -127,7 +127,7 @@ public abstract class Statement
         return statement;
     }
     
-    private static Statement ParseStatementExtension(Statement statement, ref TokenList list)
+    private static Statement? ParseStatementExtension(Statement statement, ref TokenList list)
     {
         foreach (StatementExtensionRegistration registration in ExtensionRegistrations)
         {
@@ -166,15 +166,14 @@ public abstract class Statement
             //Invoke its OnParse() callback
             statement.OnParse(ref list);
 
-            ParseStatementExtension(statement, ref list);
-
-            break;
+            return ParseStatementExtension(statement, ref list);
+            
 
             next: ;
         }
 
 
-        throw new NotImplementedException();
+        return null;
     }
 
     public static Statement[] ParseMultiple(TokenList list)
