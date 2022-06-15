@@ -35,7 +35,7 @@ public class TokenList : IEnumerable<Token>
     /// <param name="expectedType">The TokenType that is expected</param>
     /// <param name="offset">Offsets the index to look at</param>
     [Pure]
-    public bool ExpectToken(TokenType expectedType, int offset = 0)
+    public bool StartsWith(TokenType expectedType, int offset = 0)
     {
         if (List.Count > offset)
             return List[0].Type == expectedType;

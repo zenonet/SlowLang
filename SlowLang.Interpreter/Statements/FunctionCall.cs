@@ -62,7 +62,7 @@ public class FunctionCall : Statement
             //Parse the parameter
             parameters.Add(Parse(ref betweenBraces));
 
-            if (betweenBraces.ExpectToken(TokenType.Comma))
+            if (betweenBraces.StartsWith(TokenType.Comma))
                 betweenBraces.Pop();
         }
 
