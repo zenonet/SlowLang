@@ -1,5 +1,8 @@
-﻿using SlowLang.Interpreter.Statements.StatementRegistrations;
-using SlowLang.Interpreter.Tokens;
+﻿using SlowLang.Engine;
+using SlowLang.Engine.Statements;
+using SlowLang.Engine.Statements.StatementRegistrations;
+using SlowLang.Engine.Tokens;
+using SlowLang.Engine.Values;
 using SlowLang.Interpreter.Values;
 
 namespace SlowLang.Interpreter.Statements;

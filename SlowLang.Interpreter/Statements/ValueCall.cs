@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
-using SlowLang.Interpreter.Statements.StatementRegistrations;
-using SlowLang.Interpreter.Tokens;
-using SlowLang.Interpreter.Values;
+using SlowLang.Engine;
+using SlowLang.Engine.Statements;
+using SlowLang.Engine.Statements.StatementRegistrations;
+using SlowLang.Engine.Tokens;
+using SlowLang.Engine.Values;
 
 namespace SlowLang.Interpreter.Statements;
 
@@ -22,10 +24,10 @@ public class ValueCall : Statement
 
     protected override bool CutTokensManually() => true;
 
-    protected override void OnParse(ref TokenList list)
+    protected override void OnParse(ref TokenList tokenList)
     {
-        value = Value.Parse(list.Take(..1).AsTokenList());
-        list.Pop();
+        value = Value.Parse(tokenList.List.Take(..1).AsTokenList());
+        tokenList.Pop();
     }
 
     public override Value Execute()

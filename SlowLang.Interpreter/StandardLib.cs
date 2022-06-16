@@ -1,4 +1,5 @@
-﻿using SlowLang.Interpreter.Statements;
+﻿using SlowLang.Engine.Values;
+using SlowLang.Interpreter.Statements;
 using SlowLang.Interpreter.Values;
 using static SlowLang.Interpreter.Statements.FunctionDefinition;
 

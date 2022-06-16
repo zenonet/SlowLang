@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using SlowLang.Interpreter.Tokens;
+using SlowLang.Engine.Tokens;
+using SlowLang.Engine.Values;
 
 namespace SlowLang.Interpreter.Values;
 

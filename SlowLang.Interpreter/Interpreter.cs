@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using SlowLang.Interpreter.Statements;
-using SlowLang.Interpreter.Tokens;
+using SlowLang.Engine;
+using SlowLang.Engine.Statements;
+using SlowLang.Engine.Tokens;
 
 namespace SlowLang.Interpreter;
 
