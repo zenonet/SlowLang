@@ -23,27 +23,11 @@ public static class Interpreter
             .AddSimpleConsole()
             ;
     });
-
-    internal static readonly ILogger Logger = LoggerFactory.CreateLogger("SlowLang.Interpreter");
-
-    internal static readonly ILogger ErrorLogger = LoggerFactory.CreateLogger("SlowLang.Errors");
-
-
-    internal static void LogError(string errorMessage, Statement statement) => LogError(errorMessage, statement.LineNumber);
-
-    internal static void LogError(string errorMessage, int lineNumber)
-    {
-        ErrorLogger.LogError($"Error is line {lineNumber}: " + errorMessage);
-        Environment.Exit(0);
-    }
-    internal static void LogError(string errorMessage)
-    {
-        ErrorLogger.LogError("Error: " + errorMessage);
-        Environment.Exit(0);
-    }
-
+    
     public static void RunScript(string code)
     {
+        LoggingManager.SetLoggerFactory(LoggerFactory);
+        
         OutputStream ??= Console.Out;
         InputStream ??= Console.In;
         

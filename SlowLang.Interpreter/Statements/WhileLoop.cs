@@ -35,7 +35,7 @@ public class WhileLoop : Statement
 
         if (rawCondition is null)
         {
-            Interpreter.LogError("Missing closing brace");
+            LoggingManager.LogError("Missing closing brace");
             throw new Exception();
         }
 
@@ -48,7 +48,7 @@ public class WhileLoop : Statement
 
         //Check if the next token is an opening curly brace. If not, throw an error
         if (list.Peek().Type != TokenType.OpeningCurlyBrace)
-            Interpreter.LogError("Unexpected token " + list.Peek().RawContent, LineNumber);
+            LoggingManager.LogError("Unexpected token " + list.Peek().RawContent, LineNumber);
 
         list.Pop(); //Remove opening curly brace
 
@@ -58,7 +58,7 @@ public class WhileLoop : Statement
         //Error handling
         if (rawCodeBlock is null)
         {
-            Interpreter.LogError("Invalid curly brace pattern", LineNumber);
+            LoggingManager.LogError("Invalid curly brace pattern", LineNumber);
             throw new Exception();
         }
 

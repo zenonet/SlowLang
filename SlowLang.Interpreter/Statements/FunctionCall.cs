@@ -42,7 +42,7 @@ public class FunctionCall : Statement
         Reference = FunctionDefinition.GetFunctionDefinition(name);
         if (Reference is null)
         {
-            Interpreter.LogError($"There is no function called {name} defined", LineNumber);
+            LoggingManager.LogError($"There is no function called {name} defined", LineNumber);
         }
 
         //Cut the opening bracket
@@ -52,7 +52,7 @@ public class FunctionCall : Statement
         TokenList? betweenBraces = ParsingUtility.FindBetweenBraces(list, TokenType.OpeningBrace, TokenType.ClosingBrace, Logger);
 
         if (betweenBraces is null)
-            Interpreter.LogError("Closing brace missing", LineNumber);
+            LoggingManager.LogError("Closing brace missing", LineNumber);
 
         //Remove the parameter list
         list.RemoveRange(..betweenBraces!.List.Count);
@@ -81,7 +81,7 @@ public class FunctionCall : Statement
             Value v = parameter.Execute();
 
             if (!v.HasValue)
-                Interpreter.LogError($"{parameter} doesn't have a return value", LineNumber);
+                LoggingManager.LogError($"{parameter} doesn't have a return value", LineNumber);
 
             executedParameters.Add(v);
         }

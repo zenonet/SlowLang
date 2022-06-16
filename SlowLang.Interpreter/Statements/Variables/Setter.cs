@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using SlowLang.Engine;
 using SlowLang.Engine.Statements;
 using SlowLang.Engine.Statements.StatementRegistrations;
 using SlowLang.Engine.Tokens;
@@ -47,7 +48,7 @@ public class Setter : Statement
         Value val = value!.Execute();
 
         if (!val.HasValue)
-            Interpreter.LogError($"{value} doesn't have a return value", LineNumber);
+            LoggingManager.LogError($"{value} doesn't have a return value", LineNumber);
 
         Value.Variables[varName!] = val;
         return SlowVoid.I;
