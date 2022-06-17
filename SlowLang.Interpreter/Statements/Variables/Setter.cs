@@ -47,7 +47,7 @@ public class Setter : Statement
     {
         Value val = value!.Execute();
 
-        if (!val.HasValue)
+        if (val.IsVoid)
             LoggingManager.LogError($"{value} doesn't have a return value", LineNumber);
 
         Value.Variables[varName!] = val;

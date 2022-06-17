@@ -80,7 +80,7 @@ public class FunctionCall : Statement
         {
             Value v = parameter.Execute();
 
-            if (!v.HasValue)
+            if (v.IsVoid)
                 LoggingManager.LogError($"{parameter} doesn't have a return value", LineNumber);
 
             executedParameters.Add(v);
