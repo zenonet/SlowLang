@@ -12,6 +12,30 @@ public static class Interpreter
     
     
     
+    private static readonly Dictionary<string, TokenType> TokenDefinitions = new()
+    {
+        {"\".*?\"", TokenType.String},
+        
+        {@"\(", TokenType.OpeningBrace},
+        {@"\)", TokenType.ClosingBrace},
+        
+        {@"\{", TokenType.OpeningCurlyBrace},
+        {@"\}", TokenType.ClosingCurlyBrace},
+        
+        {@"\d+", TokenType.Int},
+        {@"\d+.?\d*(?:f|F)", TokenType.Float},
+        {@"(?:(?:t|T)(?:rue|RUE))|(?:(?:f|F)(?:alse|ALSE))", TokenType.Bool},
+        
+        
+        {@";", TokenType.Semicolon},
+        {@",", TokenType.Comma},
+        {@"\s*=\s*", TokenType.Equals},
+        
+        
+        {@"\w*", TokenType.Keyword}, //Needs to be the last one
+    };
+    
+    
     
     /// <summary>
     /// The LoggerFactory used for all Loggers in the Project
@@ -31,6 +55,7 @@ public static class Interpreter
         OutputStream ??= Console.Out;
         InputStream ??= Console.In;
         
+        Lexer.DefineTokens(TokenDefinitions);
         TokenList tokenList = Lexer.Lex(code);
 
         StandardLib.Import();
