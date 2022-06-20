@@ -48,6 +48,10 @@ public static class Interpreter
             ;
     });
     
+    /// <summary>
+    /// Runs a script directly from a string
+    /// </summary>
+    /// <param name="code">The code to execute</param>
     public static void RunScript(string code)
     {
         LoggingManager.SetLoggerFactory(LoggerFactory);
