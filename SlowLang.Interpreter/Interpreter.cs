@@ -32,7 +32,7 @@ public static class Interpreter
         {@"\s*=\s*", TokenType.Equals},
         
         
-        {@"\w*", TokenType.Keyword}, //Needs to be the last one
+        {@"\w*", TokenType.Keyword}, //Needs to be the last one because it would accept nearly anything
     };
     
     
