@@ -86,6 +86,8 @@ public class FunctionCall : Statement
             executedParameters.Add(v);
         }
 
-        return Reference?.OnInvoke.Invoke(executedParameters.ToArray())!;
+        return Reference?.OnInvoke.Invoke(
+            new FunctionCallContext(executedParameters.ToArray(), this)
+        )!;
     }
 }
