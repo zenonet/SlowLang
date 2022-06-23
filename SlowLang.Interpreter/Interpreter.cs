@@ -19,8 +19,8 @@ public static class Interpreter
         {@"\(", TokenType.OpeningBrace},
         {@"\)", TokenType.ClosingBrace},
         
-        {@"\{", TokenType.OpeningCurlyBrace},
-        {@"\}", TokenType.ClosingCurlyBrace},
+        {@"\{|^block", TokenType.OpeningCurlyBrace},
+        {@"\}|^end", TokenType.ClosingCurlyBrace},
         
         {@"\d+", TokenType.Int},
         {@"\d+.?\d*(?:f|F)", TokenType.Float},
