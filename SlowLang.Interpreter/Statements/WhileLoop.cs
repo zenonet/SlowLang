@@ -74,7 +74,7 @@ public class WhileLoop : Statement
 
     public override Value Execute()
     {
-        while (((SlowBool) condition!.Execute()).Value)
+        while (condition!.Execute().ConvertImplicitly<SlowBool>().Value)
         {
             codeBlock?.Execute();
         }
