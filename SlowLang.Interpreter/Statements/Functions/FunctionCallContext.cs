@@ -18,11 +18,17 @@ public readonly struct FunctionCallContext
     {
         for (int i = 0; i < parameterTypes.Length; i++)
         {
-            if (parameterTypes[i] != Parameters[i].GetType())
+            if (parameterTypes[i] == Parameters[i].GetType()) 
+                continue;
+            
+            //Implicit conversion
+            if (Parameters[i].TryConvertImplicitly(parameterTypes[i], out Value convertedParam))
             {
-                //TODO: Add implicit conversion
-                LoggingManager.LogError($"Invalid type of parameter {Caller.Parameters[i]}");
+                Parameters[i] = convertedParam;
+                continue;
             }
+                
+            LoggingManager.LogError($"Invalid type of parameter {Caller.Parameters[i]}");
         }
     }
 }
