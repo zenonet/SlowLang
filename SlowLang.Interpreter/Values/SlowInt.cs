@@ -12,6 +12,13 @@ public class SlowInt : Value
     {
         Value = value;
     }
+
+    public SlowInt()
+    {
+        
+    }
+
+    public static string GetKeyword() => "int";
     
     public static bool TryParse(ref TokenList tokenList, [MaybeNullWhen(false)]out Value val)
     {

@@ -13,6 +13,11 @@ public class SlowString : Value
         Value = value;
     }
 
+    public SlowString()
+    {
+        
+    }
+    public static string GetKeyword() => "string";
     public static bool TryParse(ref TokenList tokenList, [MaybeNullWhen(false)]out Value val)
     {
         if (tokenList.Peek().Type is TokenType.String)

@@ -8,6 +8,8 @@ public class SlowBool : Value
 {
     public bool Value;
 
+    
+    public static string GetKeyword() => "bool";
     public SlowBool(bool value)
     {
         Value = value;
