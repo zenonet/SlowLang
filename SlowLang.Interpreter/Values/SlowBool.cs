@@ -24,4 +24,15 @@ public class SlowBool : Value
         val = null;
         return false;
     }
+
+    public override bool TryConvertImplicitly(Type targetType, out Value output)
+    {
+        if (targetType == typeof(SlowInt))
+        {
+            output = new SlowInt(Value ? 1 : 0);
+        }
+        
+        output = null!;
+        return false;
+    }
 }
