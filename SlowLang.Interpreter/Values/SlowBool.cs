@@ -33,6 +33,10 @@ public class SlowBool : Value
         {
             output = new SlowInt(Value ? 1 : 0);
         }
+        if (targetType == typeof(SlowString))
+        {
+            output = new SlowString(Value.ToString());
+        }
         
         output = null!;
         return false;
