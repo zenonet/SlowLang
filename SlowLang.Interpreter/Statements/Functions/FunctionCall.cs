@@ -49,7 +49,7 @@ public class FunctionCall : Statement
         list.Pop();
 
         //Find everything between the braces
-        TokenList? betweenBraces = ParsingUtility.FindBetweenBraces(list, TokenType.OpeningBrace, TokenType.ClosingBrace, Logger);
+        TokenList? betweenBraces = list.FindBetweenBraces(TokenType.OpeningBrace, TokenType.ClosingBrace, Logger);
 
         if (betweenBraces is null)
             LoggingManager.LogError("Closing brace missing", LineNumber);
