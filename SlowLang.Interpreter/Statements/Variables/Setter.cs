@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
-using SlowLang.Interpreter.Statements.StatementRegistrations;
-using SlowLang.Interpreter.Tokens;
-using SlowLang.Interpreter.Values;
+using SlowLang.Engine;
+using SlowLang.Engine.Statements;
+using SlowLang.Engine.Statements.StatementRegistrations;
+using SlowLang.Engine.Tokens;
+using SlowLang.Engine.Values;
 
 namespace SlowLang.Interpreter.Statements.Variables;
 
@@ -38,15 +40,16 @@ public class Setter : Statement
             Logger.LogCritical("Missing semicolon after setter statement");
 
         //Register the variable but don't give it any value yet
-        Value.Variables.Add(varName, SlowVoid.I);
+        if(!Value.Variables.ContainsKey(varName))
+            Value.Variables.Add(varName, SlowVoid.I);
     }
 
     public override Value Execute()
     {
         Value val = value!.Execute();
 
-        if (!val.HasValue)
-            Interpreter.LogError($"{value} doesn't have a return value", LineNumber);
+        if (val.IsVoid)
+            LoggingManager.LogError($"{value} doesn't have a return value", LineNumber);
 
         Value.Variables[varName!] = val;
         return SlowVoid.I;

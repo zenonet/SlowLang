@@ -1,7 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
-using SlowLang.Interpreter.Statements.StatementRegistrations;
-using SlowLang.Interpreter.Tokens;
-using SlowLang.Interpreter.Values;
+using SlowLang.Engine;
+using SlowLang.Engine.Statements;
+using SlowLang.Engine.Statements.StatementRegistrations;
+using SlowLang.Engine.Tokens;
+using SlowLang.Engine.Values;
+
 
 namespace SlowLang.Interpreter.Statements;
 
@@ -39,17 +42,17 @@ public class FunctionCall : Statement
         Reference = FunctionDefinition.GetFunctionDefinition(name);
         if (Reference is null)
         {
-            Interpreter.LogError($"There is no function called {name} defined", LineNumber);
+            LoggingManager.LogError($"There is no function called {name} defined", LineNumber);
         }
 
         //Cut the opening bracket
         list.Pop();
 
         //Find everything between the braces
-        TokenList? betweenBraces = ParsingUtility.FindBetweenBraces(list, TokenType.OpeningBrace, TokenType.ClosingBrace, Logger);
+        TokenList? betweenBraces = list.FindBetweenBraces(TokenType.OpeningBrace, TokenType.ClosingBrace, Logger);
 
         if (betweenBraces is null)
-            Interpreter.LogError("Closing brace missing", LineNumber);
+            LoggingManager.LogError("Closing brace missing", LineNumber);
 
         //Remove the parameter list
         list.RemoveRange(..betweenBraces!.List.Count);
@@ -77,12 +80,14 @@ public class FunctionCall : Statement
         {
             Value v = parameter.Execute();
 
-            if (!v.HasValue)
-                Interpreter.LogError($"{parameter} doesn't have a return value", LineNumber);
+            if (v.IsVoid)
+                LoggingManager.LogError($"{parameter} doesn't have a return value", LineNumber);
 
             executedParameters.Add(v);
         }
 
-        return Reference?.OnInvoke.Invoke(executedParameters.ToArray())!;
+        return Reference?.OnInvoke.Invoke(
+            new FunctionCallContext(executedParameters.ToArray(), this)
+        )!;
     }
 }

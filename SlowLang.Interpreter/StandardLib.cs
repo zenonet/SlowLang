@@ -1,4 +1,5 @@
-﻿using SlowLang.Interpreter.Statements;
+﻿using SlowLang.Engine.Values;
+using SlowLang.Interpreter.Statements;
 using SlowLang.Interpreter.Values;
 using static SlowLang.Interpreter.Statements.FunctionDefinition;
 
@@ -10,9 +11,11 @@ public static class StandardLib
     {
         DefinedFunctions.Add(new FunctionDefinition(
             "print",
-            (parameters) =>
+            context =>
             {
-                Interpreter.OutputStream?.WriteLine(((SlowString) parameters[0]).Value);
+                context.ExpectParameters(typeof(SlowString));
+                
+                Interpreter.OutputStream?.WriteLine(((SlowString) context.Parameters[0]).Value);
                 return SlowVoid.I;
             }
         ));

@@ -1,4 +1,5 @@
-﻿using SlowLang.Interpreter.Values;
+﻿using SlowLang.Engine.Values;
+using SlowLang.Interpreter.Values;
 
 namespace SlowLang.Interpreter.Statements;
 
@@ -16,9 +17,9 @@ public class FunctionDefinition
     public string Identifier;
     public Type[] Parameters;
 
-    public readonly Func<Value[], Value> OnInvoke;
-    
-    public FunctionDefinition(string identifier, Func<Value[], Value> onInvoke, params Type[] parameters)
+    public readonly Func<FunctionCallContext, Value> OnInvoke;
+
+    public FunctionDefinition(string identifier, Func<FunctionCallContext, Value> onInvoke, params Type[] parameters)
     {
         Identifier = identifier;
         OnInvoke = onInvoke;

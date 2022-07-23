@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using SlowLang.Interpreter.Tokens;
+using SlowLang.Engine.Tokens;
+using SlowLang.Engine.Values;
 
 namespace SlowLang.Interpreter.Values;
 
@@ -12,6 +13,11 @@ public class SlowString : Value
         Value = value;
     }
 
+    public SlowString()
+    {
+        
+    }
+    public static string GetKeyword() => "string";
     public static bool TryParse(ref TokenList tokenList, [MaybeNullWhen(false)]out Value val)
     {
         if (tokenList.Peek().Type is TokenType.String)

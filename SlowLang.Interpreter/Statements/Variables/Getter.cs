@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
-using SlowLang.Interpreter.Statements.StatementRegistrations;
-using SlowLang.Interpreter.Tokens;
-using SlowLang.Interpreter.Values;
+using SlowLang.Engine;
+using SlowLang.Engine.Statements;
+using SlowLang.Engine.Statements.StatementRegistrations;
+using SlowLang.Engine.Tokens;
+using SlowLang.Engine.Values;
 
 namespace SlowLang.Interpreter.Statements.Variables;
 
@@ -29,7 +31,7 @@ public class Getter : Statement
     public override Value Execute()
     {
         if (!Value.Variables.ContainsKey(VariableName))
-            Interpreter.LogError("There is no variable called " + VariableName, LineNumber);
+            LoggingManager.LogError("There is no variable called " + VariableName, LineNumber);
 
         //Interpreter.LogError makes the process exit so this will only run if the variable exists
         return Value.Variables[VariableName];

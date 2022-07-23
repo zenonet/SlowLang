@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using SlowLang.Interpreter.Tokens;
+using SlowLang.Engine.Tokens;
+using SlowLang.Engine.Values;
 
 namespace SlowLang.Interpreter.Values;
 
@@ -7,6 +8,8 @@ public class SlowBool : Value
 {
     public bool Value;
 
+    
+    public static string GetKeyword() => "bool";
     public SlowBool(bool value)
     {
         Value = value;
@@ -21,6 +24,21 @@ public class SlowBool : Value
         }
 
         val = null;
+        return false;
+    }
+
+    public override bool TryConvertImplicitly(Type targetType, out Value output)
+    {
+        if (targetType == typeof(SlowInt))
+        {
+            output = new SlowInt(Value ? 1 : 0);
+        }
+        if (targetType == typeof(SlowString))
+        {
+            output = new SlowString(Value.ToString());
+        }
+        
+        output = null!;
         return false;
     }
 }

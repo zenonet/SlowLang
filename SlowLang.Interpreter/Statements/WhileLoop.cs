@@ -1,5 +1,8 @@
-﻿using SlowLang.Interpreter.Statements.StatementRegistrations;
-using SlowLang.Interpreter.Tokens;
+﻿using SlowLang.Engine;
+using SlowLang.Engine.Statements;
+using SlowLang.Engine.Statements.StatementRegistrations;
+using SlowLang.Engine.Tokens;
+using SlowLang.Engine.Values;
 using SlowLang.Interpreter.Values;
 
 namespace SlowLang.Interpreter.Statements;
@@ -32,7 +35,7 @@ public class WhileLoop : Statement
 
         if (rawCondition is null)
         {
-            Interpreter.LogError("Missing closing brace");
+            LoggingManager.LogError("Missing closing brace");
             throw new Exception();
         }
 
@@ -45,7 +48,7 @@ public class WhileLoop : Statement
 
         //Check if the next token is an opening curly brace. If not, throw an error
         if (list.Peek().Type != TokenType.OpeningCurlyBrace)
-            Interpreter.LogError("Unexpected token " + list.Peek().RawContent, LineNumber);
+            LoggingManager.LogError("Unexpected token " + list.Peek().RawContent, LineNumber);
 
         list.Pop(); //Remove opening curly brace
 
@@ -55,7 +58,7 @@ public class WhileLoop : Statement
         //Error handling
         if (rawCodeBlock is null)
         {
-            Interpreter.LogError("Invalid curly brace pattern", LineNumber);
+            LoggingManager.LogError("Invalid curly brace pattern", LineNumber);
             throw new Exception();
         }
 
@@ -71,7 +74,7 @@ public class WhileLoop : Statement
 
     public override Value Execute()
     {
-        while (((SlowBool) condition!.Execute()).Value)
+        while (condition!.Execute().ConvertImplicitly<SlowBool>().Value)
         {
             codeBlock?.Execute();
         }
