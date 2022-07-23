@@ -40,7 +40,8 @@ public class Setter : Statement
             Logger.LogCritical("Missing semicolon after setter statement");
 
         //Register the variable but don't give it any value yet
-        Value.Variables.Add(varName, SlowVoid.I);
+        if(!Value.Variables.ContainsKey(varName))
+            Value.Variables.Add(varName, SlowVoid.I);
     }
 
     public override Value Execute()
