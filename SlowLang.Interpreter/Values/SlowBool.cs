@@ -6,6 +6,7 @@ namespace SlowLang.Interpreter.Values;
 
 public class SlowBool : Value
 {
+    [MainDataField]
     public bool Value;
 
     

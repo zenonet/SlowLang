@@ -6,6 +6,7 @@ namespace SlowLang.Interpreter.Values;
 
 public class SlowInt : Value
 {
+    [MainDataField]
     public int Value;
 
     public SlowInt(int value)

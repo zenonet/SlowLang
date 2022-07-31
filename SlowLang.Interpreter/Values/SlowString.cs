@@ -6,6 +6,7 @@ namespace SlowLang.Interpreter.Values;
 
 public class SlowString : Value
 {
+    [MainDataField]
     public string Value;
 
     public SlowString(string value)
@@ -15,7 +16,7 @@ public class SlowString : Value
 
     public SlowString()
     {
-        
+        Value = string.Empty;
     }
     public static string GetKeyword() => "string";
     public static bool TryParse(ref TokenList tokenList, [MaybeNullWhen(false)]out Value val)
