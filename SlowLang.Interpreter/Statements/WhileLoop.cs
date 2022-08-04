@@ -24,7 +24,7 @@ public class WhileLoop : Statement
 
     protected override bool CutTokensManually() => true;
 
-    protected override void OnParse(ref TokenList list)
+    protected override bool OnParse(ref TokenList list)
     {
         list.Pop(); //Remove the 'while' keyword
         list.Pop(); //Remove the opening bracket
@@ -53,7 +53,7 @@ public class WhileLoop : Statement
         list.Pop(); //Remove opening curly brace
 
         TokenList? rawCodeBlock =
-            ParsingUtility.FindBetweenBraces(list, TokenType.OpeningCurlyBrace, TokenType.ClosingCurlyBrace, Logger);
+            list.FindBetweenBraces(TokenType.OpeningCurlyBrace, TokenType.ClosingCurlyBrace, Logger);
 
         //Error handling
         if (rawCodeBlock is null)
@@ -70,6 +70,8 @@ public class WhileLoop : Statement
 
 
         codeBlock = ParseMultiple(rawCodeBlock);
+
+        return true;
     }
 
     public override Value Execute()

@@ -13,27 +13,37 @@ public class Getter : Statement
 
     public static void OnInitialize()
     {
-        Logger.LogInformation("Now initializing Getter");
 
         StatementRegistration.Create<Getter>(
-                tokenList => Value.Variables.ContainsKey(tokenList.Peek().RawContent), //Check if a variable with that name exists
+                tokenList => Interpreter.Variables.ContainsKey(tokenList.Peek().RawContent), //Check if a variable with that name exists
                 TokenType.Keyword)
             .Register();
     }
 
     protected override bool CutTokensManually() => true;
 
-    protected override void OnParse(ref TokenList list)
+    protected override bool OnParse(ref TokenList list)
     {
-        VariableName = list.Pop().RawContent;
+        VariableName = list.Peek().RawContent;
+
+        if (Interpreter.Variables.ContainsKey(VariableName))
+            return true;
+        
+        Logger.LogCritical(
+            "Variable getter parsed which tries to " +
+            $"access not declared variable {VariableName}. " + 
+            ("Parsing of the getter cancelled, now trying to parse {token}", list.Peek()) +
+            "differently"
+            );
+        return false;
     }
 
     public override Value Execute()
     {
-        if (!Value.Variables.ContainsKey(VariableName))
+        if (!Interpreter.Variables.ContainsKey(VariableName))
             LoggingManager.LogError("There is no variable called " + VariableName, LineNumber);
 
         //Interpreter.LogError makes the process exit so this will only run if the variable exists
-        return Value.Variables[VariableName];
+        return Interpreter.Variables[VariableName];
     }
 }

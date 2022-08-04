@@ -2,6 +2,7 @@
 using SlowLang.Engine;
 using SlowLang.Engine.Statements;
 using SlowLang.Engine.Tokens;
+using SlowLang.Engine.Values;
 
 namespace SlowLang.Interpreter;
 
@@ -10,6 +11,11 @@ public static class Interpreter
     public static TextWriter? OutputStream;
     public static TextReader? InputStream;
 
+    
+    /// <summary>
+    /// Contains all variables in the current script
+    /// </summary>
+    public static readonly Dictionary<string, Value> Variables = new();
 
     private static readonly Dictionary<string, TokenType> TokenDefinitions = new()
     {

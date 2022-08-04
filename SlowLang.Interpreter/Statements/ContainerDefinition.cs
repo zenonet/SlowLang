@@ -23,7 +23,7 @@ public class ContainerDefinition : Statement
     public string Name;
     public Dictionary<string, Value> Fields;
 
-    protected override void OnParse(ref TokenList list)
+    protected override bool OnParse(ref TokenList list)
     {
         //Remove container keyword
         list.Pop();
@@ -47,7 +47,8 @@ public class ContainerDefinition : Statement
         list.Pop();
         
         ContainerDefinitions.Add(this);
-        ;
+
+        return true;
     }
 
     private static Dictionary<string, Value> GetFields(ref TokenList list)

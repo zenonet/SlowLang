@@ -13,8 +13,6 @@ public class ValueCall : Statement
 
     public static void OnInitialize()
     {
-        Logger.LogInformation("Now initializing ValueCall");
-
         StatementRegistration.Create<ValueCall>(TokenType.String).Register();
         StatementRegistration.Create<ValueCall>(TokenType.Int).Register();
         StatementRegistration.Create<ValueCall>(TokenType.Float).Register();
@@ -24,10 +22,19 @@ public class ValueCall : Statement
 
     protected override bool CutTokensManually() => true;
 
-    protected override void OnParse(ref TokenList tokenList)
+    protected override bool OnParse(ref TokenList tokenList)
     {
         value = Value.Parse(tokenList.List.Take(..1).AsTokenList());
+
+        if (value == null)
+        {
+            Logger.LogError("Unable to parse {token}", tokenList.Peek());
+            return false;
+        }
+        
         tokenList.Pop();
+
+        return true;
     }
 
     public override Value Execute()

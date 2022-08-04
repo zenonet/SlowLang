@@ -14,7 +14,6 @@ public class Setter : Statement
 
     public static void OnInitialize()
     {
-        Logger.LogInformation("Now initializing Setter");
         StatementRegistration.Create<Setter>(
                 TokenType.Keyword,
                 TokenType.Equals)
@@ -25,7 +24,7 @@ public class Setter : Statement
     protected override bool CutTokensManually() => true;
 
 
-    protected override void OnParse(ref TokenList list)
+    protected override bool OnParse(ref TokenList list)
     {
         //Get the variable name
         varName = list.Pop().RawContent;
@@ -40,8 +39,13 @@ public class Setter : Statement
             Logger.LogCritical("Missing semicolon after setter statement");
 
         //Register the variable but don't give it any value yet
-        if(!Value.Variables.ContainsKey(varName))
-            Value.Variables.Add(varName, SlowVoid.I);
+        if (!Interpreter.Variables.ContainsKey(varName))
+        {
+            Interpreter.Variables.Add(varName, SlowVoid.I);
+            Logger.LogInformation($"Declared a variable called {varName}");
+        }
+
+        return true;
     }
 
     public override Value Execute()
@@ -51,7 +55,7 @@ public class Setter : Statement
         if (val.IsVoid)
             LoggingManager.LogError($"{value} doesn't have a return value", LineNumber);
 
-        Value.Variables[varName!] = val;
+        Interpreter.Variables[varName!] = val;
         return SlowVoid.I;
     }
 }

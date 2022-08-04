@@ -29,13 +29,12 @@ public class FunctionCall : Statement
 
     public static void OnInitialize()
     {
-        Logger.LogInformation("Now initializing FunctionCall");
         StatementRegistration.Create<FunctionCall>(TokenType.Keyword, TokenType.OpeningBrace).Register();
     }
 
     protected override bool CutTokensManually() => true;
 
-    protected override void OnParse(ref TokenList list)
+    protected override bool OnParse(ref TokenList list)
     {
         //Find the FunctionDefinition this FunctionCall belongs to
         string name = list.Pop().RawContent;
@@ -70,6 +69,8 @@ public class FunctionCall : Statement
         }
 
         this.Parameters = parameters.ToArray();
+
+        return true;
     }
 
     public override Value Execute()
