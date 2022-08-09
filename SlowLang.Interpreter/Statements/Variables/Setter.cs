@@ -31,8 +31,11 @@ public class Setter : Statement
         //Remove the equals
         list.Pop();
 
-        value = Statement.Parse(ref list);
+        value = Statement.Parse(ref list, false);
 
+        if (value == null)
+            return false;
+        
         if (list.StartsWith(TokenType.Semicolon))
             list.Pop();
         else

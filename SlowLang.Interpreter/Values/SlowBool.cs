@@ -1,6 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
+using SlowLang.Engine;
 using SlowLang.Engine.Tokens;
 using SlowLang.Engine.Values;
+using SlowLang.Interpreter.Statements.Operators;
+using Zenonet.Utility;
 
 namespace SlowLang.Interpreter.Values;
 
@@ -14,6 +18,19 @@ public class SlowBool : Value
     public SlowBool(bool value)
     {
         Value = value;
+    }
+
+    public override Value ApplyOperator(Subtype<Operator> @operator, Value rightOperand)
+    {
+        if (@operator.Type == typeof(EqualityOperator))
+        {
+            if(rightOperand is SlowInt rightInt)
+            {
+                return new SlowBool(Value  == (rightInt.Value != 1));
+            }
+
+        }
+        return null;
     }
 
     public static bool TryParse(ref TokenList tokenList, [MaybeNullWhen(false)] out Value val)
