@@ -1,3 +1,4 @@
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/zenonet/SlowLang/.NET)
 # SlowLang
 SlowLang is a semi-eso programming language I designed just for fun.<br>
 Right now it doesn't have a lot of functionality. Basically everything you can do is infinite loops, input, output, getting the current Time and variables.
