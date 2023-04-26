@@ -1,4 +1,4 @@
-![GitHub Workflow Status]https://img.shields.io/github/actions/workflow/status/zenonet/SlowLang/dotnet.yml?branch=master)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/zenonet/SlowLang/dotnet.yml?branch=master)
 # SlowLang
 SlowLang is a semi-eso programming language I designed just for fun.<br>
 Syntactically, it's very simmilar to most modern languages such as C# or Java.<br>
