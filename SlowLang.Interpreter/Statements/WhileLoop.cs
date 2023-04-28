@@ -1,4 +1,5 @@
 ﻿using SlowLang.Engine;
+using SlowLang.Engine.Initialization;
 using SlowLang.Engine.Statements;
 using SlowLang.Engine.Statements.StatementRegistrations;
 using SlowLang.Engine.Tokens;
@@ -7,12 +8,12 @@ using SlowLang.Interpreter.Values;
 
 namespace SlowLang.Interpreter.Statements;
 
-public class WhileLoop : Statement
+public class WhileLoop : Statement, IInitializable
 {
     private Statement? condition;
     private Statement[]? codeBlock;
 
-    public static void OnInitialize()
+    public static void Initialize()
     {
         StatementRegistration.Create<WhileLoop>(
                 tokenList => tokenList.Peek().RawContent == "while",
@@ -69,7 +70,7 @@ public class WhileLoop : Statement
         list.Pop();
 
 
-        codeBlock = ParseMultiple(rawCodeBlock);
+        codeBlock = ParseMultiple(ref rawCodeBlock);
 
         return true;
     }

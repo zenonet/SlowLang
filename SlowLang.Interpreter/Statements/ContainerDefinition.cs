@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using SlowLang.Engine;
+using SlowLang.Engine.Initialization;
 using SlowLang.Engine.Statements;
 using SlowLang.Engine.Statements.StatementRegistrations;
 using SlowLang.Engine.Tokens;
@@ -7,12 +8,12 @@ using SlowLang.Engine.Values;
 
 namespace SlowLang.Interpreter.Statements;
 
-public class ContainerDefinition : Statement
+public class ContainerDefinition : Statement, IInitializable
 {
     public static readonly List<ContainerDefinition> ContainerDefinitions = new();
 
 
-    public static void OnInitialize()
+    public static void Initialize()
     {
         StatementRegistration.Create<ContainerDefinition>(
             x => x.Peek().RawContent == "container",
@@ -74,7 +75,7 @@ public class ContainerDefinition : Statement
                 list.Pop();
 
                 //Parse the default value
-                value = Value.Parse(list);
+                value = Value.Parse(ref list);
 
                 //Null-check
                 if (value is null)

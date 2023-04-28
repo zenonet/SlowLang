@@ -62,7 +62,7 @@ public static class Interpreter
 
         StandardLib.Import();
 
-        Statement[] statements = Statement.ParseMultiple(tokenList);
+        Statement[] statements = Statement.ParseMultiple(ref tokenList);
         statements.Execute();
     }
 }

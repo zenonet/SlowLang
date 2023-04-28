@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using SlowLang.Engine;
+using SlowLang.Engine.Initialization;
 using SlowLang.Engine.Statements;
 using SlowLang.Engine.Statements.StatementRegistrations;
 using SlowLang.Engine.Tokens;
@@ -11,7 +12,7 @@ namespace SlowLang.Interpreter.Statements;
 /// <summary>
 /// Represents a call to a function in a SlowLang script
 /// </summary>
-public class FunctionCall : Statement
+public class FunctionCall : Statement, IInitializable
 {
     public FunctionDefinition? Reference;
 
@@ -27,7 +28,7 @@ public class FunctionCall : Statement
     {
     }
 
-    public static void OnInitialize()
+    public static void Initialize()
     {
         StatementRegistration.Create<FunctionCall>(TokenType.Keyword, TokenType.OpeningBrace).Register();
     }

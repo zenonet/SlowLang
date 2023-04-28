@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using SlowLang.Engine;
+using SlowLang.Engine.Initialization;
 using SlowLang.Engine.Statements;
 using SlowLang.Engine.Statements.StatementRegistrations;
 using SlowLang.Engine.Tokens;
@@ -7,11 +8,11 @@ using SlowLang.Engine.Values;
 
 namespace SlowLang.Interpreter.Statements;
 
-public class ValueCall : Statement
+public class ValueCall : Statement, IInitializable
 {
     private Value? value;
 
-    public static void OnInitialize()
+    public static void Initialize()
     {
         StatementRegistration.Create<ValueCall>(TokenType.String).Register();
         StatementRegistration.Create<ValueCall>(TokenType.Int).Register();
@@ -24,7 +25,7 @@ public class ValueCall : Statement
 
     protected override bool OnParse(ref TokenList tokenList)
     {
-        value = Value.Parse(tokenList.List.Take(..1).AsTokenList());
+        value = Value.Parse(ref tokenList);
 
         if (value == null)
         {
@@ -32,8 +33,6 @@ public class ValueCall : Statement
             return false;
         }
         
-        tokenList.Pop();
-
         return true;
     }
 

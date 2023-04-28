@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using SlowLang.Engine;
+using SlowLang.Engine.Initialization;
 using SlowLang.Engine.Statements;
 using SlowLang.Engine.Statements.StatementRegistrations;
 using SlowLang.Engine.Tokens;
@@ -8,9 +9,9 @@ using SlowLang.Interpreter.Values;
 
 namespace SlowLang.Interpreter.Statements.Operators;
 
-public class EqualityOperator : Operator
+public class EqualityOperator : Operator, IInitializable
 {
-    public static void OnInitialize()
+    public static void Initialize()
     {
         StatementExtensionRegistration
             .CreateStatementExtensionRegistration<Statement, EqualityOperator>(
