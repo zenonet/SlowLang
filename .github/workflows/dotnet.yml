@@ -21,3 +21,8 @@ jobs:
       run: dotnet restore SlowLang.Interpreter
     - name: Build
       run: dotnet build SlowLang.Interpreter --no-restore
+    - name: Upload build
+      uses: actions/upload-artifact@v3
+      with:
+        name: build (framework dependent)
+        path: SusLang/bin/Debug/net7.0/
